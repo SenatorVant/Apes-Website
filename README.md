@@ -52,9 +52,12 @@ We tried to pick the best tools available, but nothing compares to Rahil:
 ## 🧠 Core Architecture
 
 javascript
+
 if (problem) {
+
     askRahil();
 } else {
+
     stillAskRahil();
 }
 
