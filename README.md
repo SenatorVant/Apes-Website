@@ -51,16 +51,14 @@ We tried to pick the best tools available, but nothing compares to Rahil:
 
 ## 🧠 Core Architecture
 
-javascript
+```javascript
 
 if (problem) {
-
     askRahil();
 } else {
-
     stillAskRahil();
 }
-
+```
 # 🛠️ Setup Instructions
 1. Clone the repo  
 2. Install dependencies  
