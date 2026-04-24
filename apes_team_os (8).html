@@ -1,0 +1,2944 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Apes of Wrath 668 — Team OS</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--red:#A80000;--red-l:#d40000;--red-g:rgba(168,0,0,0.13);--bg:#0d0d0f;--bg2:#141416;--bg3:#1a1a1e;--bg4:#202025;--bg5:#27272d;--b:rgba(255,255,255,0.07);--b2:rgba(255,255,255,0.12);--tx:#f0f0f2;--tx2:#9090a0;--tx3:#505060;--gr:#22c55e;--ye:#f59e0b;--sw:224px;--sh:52px}
+.lm{--bg:#f4f4f6;--bg2:#fff;--bg3:#ececef;--bg4:#e2e2e6;--bg5:#d5d5da;--b:rgba(0,0,0,0.07);--b2:rgba(0,0,0,0.13);--tx:#111114;--tx2:#55555f;--tx3:#9999a8}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);height:100vh;overflow:hidden}
+
+/* ── LOGIN ── */
+.login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);position:relative;overflow:hidden}
+.lbg-c{position:absolute;border-radius:50%}
+.lbg-1{width:600px;height:600px;top:-200px;right:-100px;background:radial-gradient(circle,rgba(168,0,0,0.12) 0%,transparent 70%)}
+.lbg-2{width:400px;height:400px;bottom:-100px;left:-100px;background:radial-gradient(circle,rgba(168,0,0,0.08) 0%,transparent 70%)}
+.login-card{background:var(--bg2);border:1px solid var(--b2);border-radius:22px;padding:40px 36px;width:400px;position:relative;z-index:1}
+.login-logo-row{display:flex;align-items:center;gap:11px;margin-bottom:28px}
+.login-badge{width:44px;height:44px;background:var(--red);border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:16px;color:#fff;flex-shrink:0}
+.login-txt{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;line-height:1.2}
+.login-txt small{display:block;font-size:11px;font-weight:400;color:var(--tx3);font-family:'DM Sans',sans-serif}
+.login-h1{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;margin-bottom:5px}
+.login-sub{font-size:13px;color:var(--tx2);margin-bottom:26px;line-height:1.5}
+.btn-google{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:var(--bg3);border:1px solid var(--b2);border-radius:11px;padding:13px 16px;font-size:14px;font-weight:500;color:var(--tx);cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
+.btn-google:hover{background:var(--bg4);border-color:rgba(255,255,255,0.2)}
+.btn-google:active{transform:scale(.98)}
+.or-div{display:flex;align-items:center;gap:10px;margin:20px 0}
+.or-line{flex:1;height:1px;background:var(--b2)}
+.or-text{font-size:11px;color:var(--tx3);white-space:nowrap}
+.adm-toggle{display:flex;align-items:center;gap:8px;cursor:pointer;margin-bottom:13px}
+.adm-icon{width:18px;height:18px;border:1px solid var(--b2);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--bg3);transition:all .15s}
+.adm-icon.open{background:var(--red);border-color:var(--red)}
+.adm-toggle span{font-size:12px;color:var(--tx2);user-select:none}
+.adm-toggle:hover span{color:var(--tx)}
+.adm-form{display:none}
+.adm-form.open{display:block}
+.fg{margin-bottom:13px}
+.fl{font-size:11px;font-weight:600;color:var(--tx2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;display:block}
+.fi{width:100%;background:var(--bg3);border:1px solid var(--b2);border-radius:8px;padding:10px 13px;font-size:13px;color:var(--tx);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .15s}
+.fi:focus{border-color:var(--red)}
+.fs{width:100%;background:var(--bg3);border:1px solid var(--b2);border-radius:8px;padding:10px 13px;font-size:13px;color:var(--tx);font-family:'DM Sans',sans-serif;outline:none;cursor:pointer}
+.btn-primary{width:100%;background:var(--red);color:#fff;border:none;border-radius:9px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .18s}
+.btn-primary:hover{background:var(--red-l)}
+.err-box{background:rgba(168,0,0,0.1);border:1px solid rgba(168,0,0,0.3);color:#ff8080;border-radius:8px;padding:10px 13px;font-size:12px;margin-bottom:13px;display:none;line-height:1.5}
+.err-box.show{display:block}
+.login-footer{font-size:11px;color:var(--tx3);text-align:center;margin-top:18px;line-height:1.6}
+.login-footer span{color:var(--red)}
+.sso-loading{display:none;flex-direction:column;align-items:center;gap:14px;padding:24px 0}
+.sso-loading.show{display:flex}
+.spinner{width:34px;height:34px;border:3px solid var(--bg4);border-top-color:var(--red);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sso-ltxt{font-size:13px;color:var(--tx2);text-align:center}
+.sso-email-txt{font-size:11px;color:var(--tx3);margin-top:2px}
+.sso-success{display:none;flex-direction:column;align-items:center;gap:11px;padding:16px 0}
+.sso-success.show{display:flex}
+.sso-ok-icon{width:50px;height:50px;border-radius:50%;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);display:flex;align-items:center;justify-content:center}
+.sso-name{font-family:'Syne',sans-serif;font-weight:700;font-size:17px}
+.sso-email-disp{font-size:12px;color:var(--tx2)}
+.role-badge-lg{font-size:11px;padding:4px 12px;border-radius:20px;font-weight:600}
+.rb-admin{background:rgba(168,0,0,.15);color:#f87171}
+.rb-captain{background:rgba(251,191,36,.15);color:#fbbf24}
+.rb-mentor{background:rgba(59,130,246,.15);color:#60a5fa}
+.rb-student{background:rgba(34,197,94,.15);color:#4ade80}
+.btn-continue{margin-top:6px;background:var(--red);color:#fff;border:none;border-radius:9px;padding:11px 28px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .18s}
+.btn-continue:hover{background:var(--red-l)}
+
+/* ── APP SHELL ── */
+.app{display:flex;height:100vh}
+.sb{width:var(--sw);background:var(--bg2);border-right:1px solid var(--b);display:flex;flex-direction:column;flex-shrink:0}
+.sb-hd{padding:14px 13px;border-bottom:1px solid var(--b);display:flex;align-items:center;gap:9px}
+.sb-logo{width:33px;height:33px;background:var(--red);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:13px;color:#fff;flex-shrink:0}
+.sb-nm{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;line-height:1.2}
+.sb-nm small{display:block;font-size:10px;color:var(--tx3);font-family:'DM Sans',sans-serif;font-weight:400}
+.sb-nav{flex:1;padding:10px 7px;overflow-y:auto}
+.ng{margin-bottom:16px}
+.ng-lbl{font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:1px;padding:0 8px;margin-bottom:4px}
+.ni{display:flex;align-items:center;gap:8px;padding:8px 8px;border-radius:7px;cursor:pointer;font-size:13px;color:var(--tx2);transition:all .13s;border:none;background:none;width:100%;text-align:left;white-space:nowrap}
+.ni:hover{background:var(--bg3);color:var(--tx)}
+.ni.on{background:var(--red-g);color:var(--red);font-weight:500}
+.ni .bdg{margin-left:auto;font-size:10px;background:var(--red);color:#fff;border-radius:9px;padding:1px 5px;font-weight:600}
+.sb-ft{padding:9px;border-top:1px solid var(--b)}
+.up{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:9px;cursor:pointer;transition:background .13s}
+.up:hover{background:var(--bg3)}
+.uav{width:29px;height:29px;background:var(--red);border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10px;color:#fff;flex-shrink:0;position:relative}
+.gdot{position:absolute;bottom:-2px;right:-2px;width:9px;height:9px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center}
+.ui{flex:1;min-width:0}
+.unm{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.url2{font-size:10px;color:var(--tx2)}
+.rb{font-size:10px;padding:2px 6px;border-radius:4px;font-weight:600;flex-shrink:0}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.topbar{height:var(--sh);background:var(--bg2);border-bottom:1px solid var(--b);display:flex;align-items:center;padding:0 18px;gap:12px;flex-shrink:0}
+.tb-ttl{font-family:'Syne',sans-serif;font-weight:600;font-size:14px;flex:1}
+.tb-r{display:flex;align-items:center;gap:7px}
+.ib{width:32px;height:32px;border-radius:7px;border:1px solid var(--b2);background:var(--bg3);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--tx2);transition:all .13s}
+.ib:hover{background:var(--bg4);color:var(--tx)}
+.bsm{padding:6px 13px;border-radius:7px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--b2);background:var(--bg3);color:var(--tx);font-family:'DM Sans',sans-serif;transition:all .13s;white-space:nowrap}
+.bsm:hover{background:var(--bg4)}
+.bsm.pr{background:var(--red);color:#fff;border-color:var(--red)}
+.bsm.pr:hover{background:var(--red-l)}
+.ct{flex:1;overflow-y:auto;padding:18px}
+@keyframes fu{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.pg{animation:fu .18s ease}
+.card{background:var(--bg2);border:1px solid var(--b);border-radius:12px;padding:16px}
+.csm{background:var(--bg3);border:1px solid var(--b);border-radius:9px;padding:12px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}
+.st{background:var(--bg3);border:1px solid var(--b);border-radius:10px;padding:14px}
+.sl{font-size:11px;color:var(--tx2);font-weight:500;margin-bottom:5px}
+.sv{font-family:'Syne',sans-serif;font-size:24px;font-weight:700}
+.ss{font-size:10px;color:var(--tx3);margin-top:2px}
+.su{color:var(--gr);font-size:10px}
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
+.st2{font-family:'Syne',sans-serif;font-weight:600;font-size:13px}
+.sl2{font-size:11px;color:var(--red);cursor:pointer}
+.sl2:hover{text-decoration:underline}
+.dv{height:1px;background:var(--b);margin:14px 0}
+.mb13{margin-bottom:13px}
+.pb{height:4px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.pbf{height:100%;background:var(--red);border-radius:2px;transition:width .3s}
+.tag{font-size:10px;padding:2px 6px;border-radius:4px;font-weight:500;display:inline-block;white-space:nowrap}
+.td{background:rgba(139,92,246,.15);color:#a78bfa}
+.tp{background:rgba(59,130,246,.15);color:#60a5fa}
+.tm{background:rgba(251,146,60,.15);color:#fb923c}
+.tc{background:rgba(20,184,166,.15);color:#2dd4bf}
+.to{background:rgba(34,197,94,.15);color:#4ade80}
+.tb2{background:rgba(251,191,36,.15);color:#fbbf24}
+.tmd{background:rgba(236,72,153,.15);color:#f472b6}
+.te{background:rgba(168,0,0,.15);color:#f87171}
+.sp{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:500;white-space:nowrap}
+.sp-n{background:rgba(59,130,246,.15);color:#60a5fa}
+.sp-p{background:rgba(251,146,60,.15);color:#fb923c}
+.sp-d{background:rgba(34,197,94,.15);color:#4ade80}
+.sp-r{background:rgba(251,191,36,.15);color:#fbbf24}
+.pc{background:var(--bg3);border:1px solid var(--b);border-radius:10px;padding:13px;cursor:pointer;transition:all .18s}
+.pc:hover{border-color:var(--red);transform:translateY(-1px)}
+.pn{font-weight:600;font-size:13px;margin-bottom:2px}
+.pm{font-size:11px;color:var(--tx2);margin-bottom:8px}
+.avs{display:flex;margin-bottom:7px}
+.av{width:21px;height:21px;border-radius:50%;border:2px solid var(--bg3);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;margin-right:-5px;color:#fff}
+.tr{display:flex;align-items:flex-start;gap:9px;padding:11px 0;border-bottom:1px solid var(--b)}
+.tr:last-child{border-bottom:none}
+.tc2{width:15px;height:15px;border:1.5px solid var(--b2);border-radius:4px;flex-shrink:0;margin-top:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .13s}
+.tc2.dn{background:var(--red);border-color:var(--red)}
+.tt{font-size:13px;font-weight:500}
+.tm2{font-size:11px;color:var(--tx2);margin-top:2px;display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.ev{display:flex;gap:10px;padding:10px;background:var(--bg3);border-radius:9px;margin-bottom:7px;border-left:3px solid var(--red)}
+.ed{text-align:center;min-width:34px}
+.eday{font-family:'Syne',sans-serif;font-weight:700;font-size:16px}
+.emo{font-size:9px;color:var(--tx2);text-transform:uppercase}
+.ett{font-size:13px;font-weight:500}
+.esb{font-size:11px;color:var(--tx2);margin-top:1px}
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.4px;padding:6px 9px;text-align:left;border-bottom:1px solid var(--b);white-space:nowrap}
+.tbl td{padding:9px 9px;border-bottom:1px solid var(--b);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--bg3)}
+.tabs{display:flex;gap:2px;background:var(--bg3);border-radius:8px;padding:3px;margin-bottom:16px;width:fit-content}
+.tab{padding:6px 13px;border-radius:6px;font-size:12px;cursor:pointer;transition:all .13s;color:var(--tx2);font-weight:500}
+.tab.on{background:var(--bg2);color:var(--tx);box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.srch{display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--b);border-radius:8px;padding:7px 11px;margin-bottom:13px}
+.srch input{flex:1;background:none;border:none;outline:none;font-size:13px;color:var(--tx);font-family:'DM Sans',sans-serif}
+.pills{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:13px}
+.pill{font-size:11px;padding:4px 9px;border-radius:20px;cursor:pointer;border:1px solid var(--b2);color:var(--tx2);transition:all .13s}
+.pill:hover{border-color:var(--red);color:var(--red)}
+.pill.on{background:var(--red);color:#fff;border-color:var(--red)}
+.ar{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--b)}
+.ar:last-child{border-bottom:none}
+.adots{display:flex;gap:3px}
+.adot{width:7px;height:7px;border-radius:50%}
+.adot.p{background:var(--gr)}
+.adot.a{background:var(--bg4)}
+.cc{background:var(--bg3);border:1px solid var(--b);border-radius:10px;padding:16px}
+.ctit{font-weight:600;font-size:13px;margin-bottom:2px}
+.cdesc{font-size:11px;color:var(--tx2);margin-bottom:12px}
+.crow{display:flex;align-items:center;gap:7px;margin-bottom:8px}
+.clbl{font-size:11px;color:var(--tx2);min-width:110px}
+.cinp{background:var(--bg4);border:1px solid var(--b2);border-radius:7px;padding:6px 9px;font-size:12px;color:var(--tx);width:88px;font-family:'DM Sans',sans-serif;outline:none}
+.cinp:focus{border-color:var(--red)}
+.csel{background:var(--bg4);border:1px solid var(--b2);border-radius:7px;padding:6px 9px;font-size:12px;color:var(--tx);font-family:'DM Sans',sans-serif;outline:none;cursor:pointer}
+.cres{background:var(--bg4);border-radius:7px;padding:9px 12px;margin-top:9px}
+.creslbl{font-size:10px;color:var(--tx2)}
+.cresv{font-family:'Syne',sans-serif;font-size:19px;font-weight:700;color:var(--red);margin-top:1px}
+.mc2{display:flex;gap:12px;padding:13px;background:var(--bg3);border-radius:10px;margin-bottom:8px}
+.mdt{background:var(--red);border-radius:7px;padding:6px 9px;text-align:center;min-width:44px;flex-shrink:0}
+.mday{font-family:'Syne',sans-serif;font-weight:700;font-size:17px;color:#fff}
+.mmo{font-size:9px;color:rgba(255,255,255,.7);text-transform:uppercase}
+.mbg{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:200}
+.mdl{background:var(--bg2);border:1px solid var(--b2);border-radius:15px;padding:26px;width:460px;max-height:84vh;overflow-y:auto}
+.mttl{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;margin-bottom:16px}
+.mft{display:flex;gap:7px;justify-content:flex-end;margin-top:18px}
+.dz{border:1.5px dashed var(--b2);border-radius:9px;padding:20px 14px;text-align:center;cursor:pointer;transition:all .18s;background:var(--bg3);position:relative}
+.dz:hover,.dz.ov{border-color:var(--red);background:var(--red-g)}
+.dz.hf{border-color:rgba(34,197,94,.4);border-style:solid;background:rgba(34,197,94,.07)}
+.dzin{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.dztit{font-size:12px;font-weight:500;margin-bottom:2px}
+.dzsub{font-size:11px;color:var(--tx2)}
+.dzsub span{color:var(--red);cursor:pointer}
+.fchip{display:none;margin-top:10px;background:var(--bg4);border:1px solid var(--b2);border-radius:7px;padding:8px 11px;align-items:center;gap:9px}
+.fchip.sh{display:flex}
+.fcnm{flex:1;font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fcmt{font-size:10px;color:var(--tx2)}
+.cdel{width:24px;height:24px;border-radius:5px;border:1px solid var(--b2);background:var(--bg3);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--tx2);flex-shrink:0}
+.cdel:hover{color:#ef4444;border-color:rgba(239,68,68,.4)}
+.nn{display:flex;align-items:center;gap:6px;cursor:pointer;margin-top:9px;width:fit-content}
+.nn input{accent-color:var(--red);cursor:pointer}
+.nn span{font-size:11px;color:var(--tx2)}
+.pw{margin-top:10px;display:none}
+.pw.sh{display:block}
+.prow{height:3px;background:var(--bg4);border-radius:2px;overflow:hidden;margin-top:5px}
+.pfill{height:100%;background:var(--red);border-radius:2px;width:0%;transition:width .05s}
+.hidden{display:none!important}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:var(--bg5);border-radius:2px}
+
+/* ── ROW ACTION BUTTONS ── */
+.act-btns{display:flex;gap:4px;flex-shrink:0}
+.act-btn{width:26px;height:26px;border-radius:5px;border:1px solid var(--b2);background:var(--bg3);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--tx2);transition:all .13s;flex-shrink:0}
+.act-btn:hover{background:var(--bg4);color:var(--tx)}
+.act-btn.del:hover{border-color:rgba(239,68,68,.4);color:#ef4444;background:rgba(239,68,68,.08)}
+.act-btn.edit:hover{border-color:rgba(59,130,246,.4);color:#60a5fa;background:rgba(59,130,246,.08)}
+/* confirm delete strip */
+.del-confirm{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:8px;padding:10px 14px;margin-top:6px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#f87171}
+.del-confirm-btns{display:flex;gap:6px}
+
+.viewas-bar{position:fixed;top:0;left:0;right:0;z-index:300;background:#92400e;border-bottom:2px solid #f59e0b;padding:8px 20px;display:flex;align-items:center;gap:12px;font-size:12px;color:#fef3c7;font-family:'DM Sans',sans-serif}
+.viewas-bar svg{flex-shrink:0}
+.viewas-label{flex:1}
+.viewas-label strong{font-weight:600}
+.viewas-exit{background:#f59e0b;color:#1c1917;border:none;border-radius:6px;padding:5px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;white-space:nowrap}
+.viewas-exit:hover{background:#fbbf24}
+.viewas-select{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:4px 10px;font-size:12px;color:#fef3c7;font-family:'DM Sans',sans-serif;outline:none;cursor:pointer}
+.viewas-select option{background:#92400e;color:#fef3c7}
+.app.viewas-active{padding-top:38px}
+
+/* View As topbar button */
+.viewas-btn{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:7px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid rgba(251,191,36,0.4);background:rgba(251,191,36,0.1);color:#fbbf24;font-family:'DM Sans',sans-serif;transition:all .15s;white-space:nowrap}
+.viewas-btn:hover{background:rgba(251,191,36,0.2);border-color:rgba(251,191,36,0.6)}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ LOGIN PAGE ═══════════════ -->
+<div class="login-page" id="loginPage">
+  <div class="lbg-c lbg-1"></div>
+  <div class="lbg-c lbg-2"></div>
+  <div class="login-card">
+    <div class="login-logo-row">
+      <div class="login-badge">668</div>
+      <div class="login-txt">Apes of Wrath <small>Team Operating System</small></div>
+    </div>
+
+    <!-- Main form -->
+    <div id="loginMain">
+      <div class="login-h1">Sign in</div>
+      <div class="login-sub">Use your team Google account. Your role is assigned automatically from your email.</div>
+
+      <button class="btn-google" onclick="startSSO()">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Continue with Google
+      </button>
+
+      <div class="or-div"><div class="or-line"></div><div class="or-text">mentors &amp; admins</div><div class="or-line"></div></div>
+
+      <div class="adm-toggle" onclick="toggleAdmForm()">
+        <div class="adm-icon" id="admIcon">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="2,3 5,7 8,3" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <span>Sign in with email &amp; password</span>
+      </div>
+
+      <div class="adm-form" id="admForm">
+        <div class="err-box" id="errBox"></div>
+        <div class="fg"><label class="fl">Team Email</label><input class="fi" id="admEmail" type="email" placeholder="you@apesofwrath668.org"></div>
+        <div class="fg"><label class="fl">Password</label><input class="fi" id="admPass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')admLogin()"></div>
+        <div class="fg"><label class="fl">Role</label>
+          <select class="fs" id="admRole">
+            <option value="student">Student</option>
+            <option value="captain">Captain</option>
+            <option value="mentor">Mentor</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+        <button class="btn-primary" onclick="admLogin()">Sign In</button>
+      </div>
+
+      <div class="login-footer">Access restricted to <span>@apesofwrath668.org</span> accounts.<br>Don't have access? Contact your team admin.</div>
+    </div>
+
+    <!-- SSO loading -->
+    <div class="sso-loading" id="ssoLoading">
+      <div class="spinner"></div>
+      <div><div class="sso-ltxt">Signing in with Google...</div><div class="sso-email-txt" id="ssoEmailTxt"></div></div>
+    </div>
+
+    <!-- SSO success -->
+    <div class="sso-success" id="ssoSuccess">
+      <div class="sso-ok-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="sso-name" id="ssoName"></div>
+      <div class="sso-email-disp" id="ssoEmailDisp"></div>
+      <div class="role-badge-lg" id="ssoRoleBadge"></div>
+      <button class="btn-continue" onclick="enterApp()">Enter Team OS →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ VIEW-AS BANNER ═══════════════ -->
+<div id="viewAsBar" class="viewas-bar" style="display:none">
+  <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#f59e0b" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+  <span class="viewas-label">Previewing as <strong id="viewAsLabel">Student</strong> — you are still logged in as Admin</span>
+  <select class="viewas-select" id="viewAsSelect" onchange="switchViewAs(this.value)">
+    <option value="student">Student</option>
+    <option value="captain">Captain</option>
+    <option value="mentor">Mentor</option>
+  </select>
+  <button class="viewas-exit" onclick="exitViewAs()">✕ Exit Preview</button>
+</div>
+
+<!-- ═══════════════ APP SHELL ═══════════════ -->
+<div class="app hidden" id="appShell">
+  <div class="sb">
+    <div class="sb-hd">
+      <div class="sb-logo">668</div>
+      <div class="sb-nm">Apes of Wrath <small>Team OS</small></div>
+    </div>
+    <div class="sb-nav">
+      <div class="ng"><div class="ng-lbl">Main</div>
+        <button class="ni on" id="n-dashboard" onclick="go('dashboard')"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Dashboard</button>
+        <button class="ni" id="n-calendar" onclick="go('calendar')"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>Calendar</button>
+        <button class="ni" id="n-attendance" onclick="go('attendance')"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>Attendance</button>
+      </div>
+      <div class="ng"><div class="ng-lbl">Projects</div>
+        <button class="ni" id="n-tasks" onclick="go('tasks')"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Tasks<span class="bdg" id="taskBadge">6</span></button>
+        <button class="ni" id="n-manufacturing" onclick="go('manufacturing')"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Manufacturing</button>
+        <button class="ni" id="n-engineering" onclick="go('engineering')"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M2 12h4M18 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>Engineering Tools</button>
+      </div>
+      <div class="ng"><div class="ng-lbl">Team</div>
+        <button class="ni" id="n-meetings" onclick="go('meetings')"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Meeting Archive</button>
+        <button class="ni" id="n-admin" onclick="go('admin')"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Admin Panel</button>
+      </div>
+    </div>
+    <div class="sb-ft">
+      <div class="up">
+        <div class="uav" id="sidebarAvatar">VJ
+          <div class="gdot"><svg width="7" height="7" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg></div>
+        </div>
+        <div class="ui"><div class="unm" id="sidebarName">Vedant J</div><div class="url2" id="sidebarSub">Admin · via Google</div></div>
+        <span class="rb rb-admin" id="sidebarRoleBadge">Admin</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="tb-ttl" id="ptitle">Dashboard</div>
+      <div class="tb-r">
+        <div class="ib" onclick="toggleTheme()" title="Toggle light/dark">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </div>
+        <div class="ib" title="Notifications">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </div>
+        <button class="viewas-btn hidden" id="viewAsBtn" onclick="startViewAs()">
+          <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          View As
+        </button>
+        <div id="tba"></div>
+      </div>
+    </div>
+    <div class="ct" id="ct"></div>
+  </div>
+</div>
+
+<script>
+
+// ═══════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════
+const ROLE_DB = {
+  'vedant.j@apesofwrath668.org':      { name:'Vedant J',       role:'admin'   },
+  'alex.chen@apesofwrath668.org':     { name:'Alex Chen',      role:'student' },
+  'mia.torres@apesofwrath668.org':    { name:'Mia Torres',     role:'student' },
+  'lena.gupta@apesofwrath668.org':    { name:'Lena Gupta',     role:'student' },
+  'omar.diaz@apesofwrath668.org':     { name:'Omar Diaz',      role:'student' },
+  'jordan.rivera@apesofwrath668.org': { name:'Jordan Rivera',  role:'captain' },
+  'priya.nair@apesofwrath668.org':    { name:'Priya Nair',     role:'captain' },
+  'dr.park@apesofwrath668.org':       { name:'Dr. Sam Park',   role:'mentor'  },
+  'admin@apesofwrath668.org':         { name:'Admin User',     role:'admin'   },
+};
+const PASSES = { student:'student123', captain:'captain456', mentor:'mentor789', admin:'admin000' };
+
+const PROJ=[
+  {id:1,name:'Swerve Drive Module',pct:67,st:'In Progress',sub:'design',mb:['AC','KR','TL'],ts:3,due:'Apr 28'},
+  {id:2,name:'Auto-Aim Shooter',pct:42,st:'Design Review',sub:'programming',mb:['MP','QS','RN'],ts:5,due:'May 3'},
+  {id:3,name:'Climber Assembly',pct:81,st:'Manufacturing',sub:'machining',mb:['VW','XB'],ts:2,due:'Apr 25'},
+  {id:4,name:'Outreach Campaign',pct:55,st:'Active',sub:'outreach',mb:['YC','ZD','AE'],ts:4,due:'May 10'},
+];
+const TASKS=[
+  {id:1,ti:'Design swerve pod CAD v3',as:'Alex Chen',cat:'design',st:'In Progress',desc:'Complete third revision with DR feedback',due:'Apr 25',project:'Swerve Drive Module'},
+  {id:2,ti:'Write auto-aim vision pipeline',as:'Jordan Rivera',cat:'programming',st:'Not Started',desc:'Implement Limelight + PID controller',due:'Apr 28',project:'Auto-Aim Shooter'},
+  {id:3,ti:'Mill swerve module housing',as:'Dr. Sam Park',cat:'machining',st:'Complete',desc:'Aluminum billet per 668-SM-001 Rev B',due:'Apr 22',project:'Swerve Drive Module'},
+  {id:4,ti:'Update Canandcoder firmware',as:'Alex Chen',cat:'controls',st:'In Progress',desc:'Flash all modules to latest firmware',due:'Apr 24',project:'Swerve Drive Module'},
+  {id:5,ti:'Submit Chairman Award essay',as:'Jordan Rivera',cat:'outreach',st:'Not Started',desc:'Draft and submit final FIRST submission',due:'Apr 30',project:'Outreach Campaign'},
+  {id:6,ti:'Create sponsor deck slides',as:'Dr. Sam Park',cat:'business',st:'In Progress',desc:'Update with 2024 season results',due:'May 1',project:'Outreach Campaign'},
+  {id:7,ti:'Film robot reveal video',as:'Alex Chen',cat:'media',st:'Not Started',desc:'Shoot B-roll for social reveal',due:'Apr 26',project:'Outreach Campaign'},
+  {id:8,ti:'Wire battery monitor system',as:'Jordan Rivera',cat:'electrical',st:'Complete',desc:'Install and test battery monitoring',due:'Apr 21',project:'Climber Assembly'},
+];
+const MFG=[
+  {id:'MFG-001',part:'668-SW-001',desc:'Swerve Module Housing',mach:'CNC Mill',mat:'Aluminum Billet',rev:'B',st:'complete',as:'Dr. Sam Park',drawing:'668-SW-001-RevB.pdf',upd:'Apr 22'},
+  {id:'MFG-002',part:'668-SW-002',desc:'Swerve Wheel Bracket',mach:'Manual Mill',mat:'Aluminum L Bracket',rev:'A',st:'design',as:'Alex Chen',drawing:'—',upd:'Apr 23'},
+  {id:'MFG-003',part:'668-SH-001',desc:'Shooter Side Plate',mach:'Laser',mat:'Polycarbonate',rev:'C',st:'mfg',as:'Jordan Rivera',drawing:'668-SH-001-RevC.pdf',upd:'Apr 23'},
+  {id:'MFG-004',part:'668-CL-001',desc:'Climber Hook',mach:'Router',mat:'Delrin',rev:'A',st:'new',as:'Dr. Sam Park',drawing:'Not necessary',upd:'N/A'},
+  {id:'MFG-005',part:'668-SH-002',desc:'Flywheel Hub',mach:'Lathe',mat:'Aluminum Billet',rev:'B',st:'complete',as:'Alex Chen',drawing:'668-SH-002-RevB.pdf',upd:'Apr 21'},
+];
+const ORDERS=[
+  {id:'PO-001',part:'REV-11-1300',name:'NEO v1.1 Motor',price:39.99,qty:4,link:'https://revrobotics.com',req:'Jordan Rivera',just:'Replacement for swerve drive modules',project:'Swerve Drive Module',status:'pending',notes:'Expedite if possible'},
+  {id:'PO-002',part:'AM-0347',name:'Colson Wheel 4"',price:8.50,qty:8,link:'https://andymark.com',req:'Alex Chen',just:'Drive wheel replacements after testing wear',project:'Swerve Drive Module',status:'ordered',notes:''},
+  {id:'PO-003',part:'WCP-SS-0890',name:'WCP Swerve X Module',price:280.00,qty:4,link:'https://wcproducts.com',req:'Dr. Sam Park',just:'Full swerve drivetrain upgrade for 2025',project:'Swerve Drive Module',status:'delivered',notes:'Requires board approval'},
+];
+const EVS=[
+  {ti:'Week 4 District Competition',dt:'Apr 26-27',type:'Competition',vis:'all',lnk:'https://frc.events',desc:'District Event at Regional High School'},
+  {ti:'Mentor Design Review',dt:'Apr 25',type:'Meeting',vis:'mentors',lnk:'',desc:'Internal DR with mentors and captains'},
+  {ti:'Outreach Visit – Lincoln MS',dt:'May 2',type:'Outreach',vis:'all',lnk:'',desc:'Robotics demo for 6th graders'},
+  {ti:'Captain Strategy Session',dt:'May 5',type:'Meeting',vis:'captains',lnk:'',desc:'Season planning and alliance strategy'},
+  {ti:'Championship Qualifying',dt:'May 15-17',type:'Competition',vis:'all',lnk:'https://frc.events',desc:'State Championship qualifying event'},
+];
+const ATT=[
+  {name:'Vedant J',      pr:[1,1,1,1,1,1,1,1,1,1],role:'admin'},
+  {name:'Alex Chen',     pr:[1,1,1,0,1,1,1,1,0,1],role:'student'},
+  {name:'Jordan Rivera', pr:[1,1,0,1,1,1,0,1,1,1],role:'captain'},
+  {name:'Dr. Sam Park',  pr:[1,1,1,1,1,1,1,1,1,1],role:'mentor'},
+  {name:'Mia Torres',    pr:[0,1,1,1,0,1,1,0,1,1],role:'student'},
+  {name:'Lena Gupta',    pr:[1,0,1,1,1,0,1,1,1,0],role:'student'},
+];
+const MTG=[
+  {day:22,mo:'Apr',ti:'Week Build Session + Design Review',sum:'Completed swerve module housing CAD. Reviewed shooter subsystem. Assigned 3 new MFG jobs. Discussed week 4 competition strategy.',tags:['design','machining','strategy']},
+  {day:18,mo:'Apr',ti:'Programming Sprint + Controls Update',sum:'Merged auto-aim PR #47. Calibrated all swerve modules. Completed battery monitor wiring. Auto routine testing complete.',tags:['programming','controls','electrical']},
+  {day:15,mo:'Apr',ti:'Outreach Planning + Business Review',sum:'Finalized Lincoln MS visit. Updated sponsor deck with 2024 results. Submitted Chairman Award draft for review.',tags:['outreach','business','media']},
+];
+
+// ═══════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════
+let isDark=true, ap='dashboard', tf='all', mt='projects', uf=null, ordFilter='all', mfgMachFilter='all', taskProjFilter='all';
+let currentUser = null;
+let viewAsRole = null;   // null = off, otherwise 'student'|'captain'|'mentor'
+let demoIdx = 0;
+const demoAccounts = Object.entries(ROLE_DB);
+
+// effectiveRole() is used everywhere instead of currentUser.role directly
+// so View As mode transparently affects all permission checks
+function effectiveRole(){ return viewAsRole || currentUser?.role || 'student'; }
+
+// ═══════════════════════════════════════════
+//  AUTH
+// ═══════════════════════════════════════════
+let admOpen = false;
+function toggleAdmForm(){
+  admOpen=!admOpen;
+  document.getElementById('admForm').classList.toggle('open',admOpen);
+  document.getElementById('admIcon').classList.toggle('open',admOpen);
+}
+function showErr(msg){const b=document.getElementById('errBox');b.textContent=msg;b.classList.add('show');if(!admOpen)toggleAdmForm();}
+
+function startSSO(){
+  // In production: trigger real Google OAuth popup here
+  // For demo: cycle through accounts to simulate different users
+  const [email,user] = demoAccounts[demoIdx % demoAccounts.length];
+  demoIdx++;
+  document.getElementById('loginMain').style.display='none';
+  const ld=document.getElementById('ssoLoading');
+  ld.classList.add('show');
+  document.getElementById('ssoEmailTxt').textContent=email;
+  setTimeout(()=>resolveUser(email,user), 1600+Math.random()*500);
+}
+
+function resolveUser(email, user){
+  document.getElementById('ssoLoading').classList.remove('show');
+  if(!email.endsWith('@apesofwrath668.org')){
+    document.getElementById('loginMain').style.display='';
+    showErr('This Google account is not part of the Apes of Wrath team. Please use your @apesofwrath668.org account.');
+    return;
+  }
+  currentUser = {...user, email, sso:true};
+  const badge=document.getElementById('ssoRoleBadge');
+  document.getElementById('ssoName').textContent=user.name;
+  document.getElementById('ssoEmailDisp').textContent=email;
+  badge.textContent=user.role.charAt(0).toUpperCase()+user.role.slice(1);
+  badge.className='role-badge-lg rb-'+user.role;
+  document.getElementById('ssoSuccess').classList.add('show');
+}
+
+function admLogin(){
+  const email=document.getElementById('admEmail').value.trim();
+  const pass=document.getElementById('admPass').value;
+  const role=document.getElementById('admRole').value;
+  if(!email.endsWith('@apesofwrath668.org')){showErr('Access restricted to @apesofwrath668.org accounts.');return;}
+  const user=ROLE_DB[email];
+  if(!user){showErr('No account found for this email address.');return;}
+  if(user.role!==role){showErr('Incorrect credentials or insufficient permissions for the selected role.');return;}
+  if(pass!==PASSES[role]){showErr('Incorrect password. Please try again.');return;}
+  currentUser={...user,email,sso:false};
+  resolveUser(email,user);
+}
+
+function enterApp(){
+  // Init task progress fields if not set
+  TASKS.forEach(t=>{ if(t.pct===undefined) t.pct = t.st==='Complete'?100:t.st==='In Progress'?50:0; });
+
+  document.getElementById('loginPage').classList.add('hidden');
+  document.getElementById('appShell').classList.remove('hidden');
+  const u=currentUser;
+  const initials=u.name.split(' ').map(n=>n[0]).join('');
+
+  // safely set avatar initials (first text node)
+  const av=document.getElementById('sidebarAvatar');
+  if(av){
+    // Clear existing text nodes and set new initials before the gdot div
+    const gdot=av.querySelector('.gdot');
+    av.textContent=initials;
+    if(gdot) av.appendChild(gdot);
+  }
+
+  document.getElementById('sidebarName').textContent=u.name;
+  document.getElementById('sidebarSub').textContent=(u.role.charAt(0).toUpperCase()+u.role.slice(1))+(u.sso?' · via Google':' · Password');
+  const rb=document.getElementById('sidebarRoleBadge');
+  rb.textContent=u.role.charAt(0).toUpperCase()+u.role.slice(1);
+  rb.className='rb rb-'+u.role;
+  if(u.role==='admin') document.getElementById('viewAsBtn').classList.remove('hidden');
+  if(u.role==='student') document.getElementById('n-admin').classList.add('hidden');
+  go('dashboard');
+}
+
+// ── VIEW AS ──────────────────────────────────
+function startViewAs(){
+  viewAsRole='student';
+  document.getElementById('viewAsSelect').value='student';
+  applyViewAs();
+}
+function switchViewAs(role){
+  viewAsRole=role;
+  applyViewAs();
+}
+function applyViewAs(){
+  const bar=document.getElementById('viewAsBar');
+  const app=document.getElementById('appShell');
+  bar.style.display='flex';
+  app.classList.add('viewas-active');
+  // Update label
+  const label=viewAsRole.charAt(0).toUpperCase()+viewAsRole.slice(1);
+  document.getElementById('viewAsLabel').textContent=label;
+  // Update sidebar role badge to reflect preview role
+  const rb=document.getElementById('sidebarRoleBadge');
+  rb.textContent=label+' (preview)';
+  rb.className='rb rb-'+viewAsRole;
+  // Hide/show admin nav item based on preview role
+  const adminNav=document.getElementById('n-admin');
+  if(viewAsRole==='student') adminNav.classList.add('hidden');
+  else adminNav.classList.remove('hidden');
+  // Re-render current page with new effective role
+  go(ap);
+}
+function exitViewAs(){
+  viewAsRole=null;
+  document.getElementById('viewAsBar').style.display='none';
+  document.getElementById('appShell').classList.remove('viewas-active');
+  // Restore real role badge
+  const u=currentUser;
+  const rb=document.getElementById('sidebarRoleBadge');
+  rb.textContent=u.role.charAt(0).toUpperCase()+u.role.slice(1);
+  rb.className='rb rb-'+u.role;
+  // Restore admin nav
+  document.getElementById('n-admin').classList.remove('hidden');
+  go(ap);
+}
+
+// ═══════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════
+function go(page){
+  ap=page;
+  document.querySelectorAll('.ni').forEach(e=>e.classList.remove('on'));
+  const ni=document.getElementById('n-'+page);if(ni)ni.classList.add('on');
+  const titles={dashboard:'Dashboard',calendar:'Team Calendar',attendance:'Attendance',tasks:'Tasks',manufacturing:'Manufacturing & Orders',engineering:'Engineering Tools',meetings:'Meeting Archive',admin:'Admin Panel'};
+  document.getElementById('ptitle').textContent=titles[page]||page;
+  document.getElementById('tba').innerHTML='';
+  ({dashboard:rDash,calendar:rCal,attendance:rAtt,tasks:rTasks,manufacturing:rMfg,engineering:rEng,meetings:rMtgs,admin:rAdmin})[page]?.();
+}
+function s(h){document.getElementById('ct').innerHTML=h;}
+function gv(id){const e=document.getElementById(id);return e?e.value:'';}
+function sv(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
+function tagCls(c){return{design:'td',programming:'tp',machining:'tm',controls:'tc',outreach:'to',business:'tb2',media:'tmd',electrical:'te'}[c]||'td';}
+
+// ═══════════════════════════════════════════
+//  DASHBOARD
+// ═══════════════════════════════════════════
+function rDash(){
+  const done=TASKS.filter(t=>t.pct===100).length,tot=TASKS.length;
+  s(`<div class="pg">
+  <div class="g4 mb13">
+    <div class="st"><div class="sl">Active Projects</div><div class="sv">${PROJ.length}</div><div class="ss su">↑ 2 this month</div></div>
+    <div class="st"><div class="sl">Tasks Complete</div><div class="sv">${done}/${tot}</div><div class="ss">${Math.round(done/tot*100)}% done</div></div>
+    <div class="st"><div class="sl">MFG Jobs Open</div><div class="sv">${MFG.filter(m=>m.st!=='complete').length}</div><div class="ss">${MFG.filter(m=>m.st==='complete').length} complete</div></div>
+    <div class="st"><div class="sl">Orders Pending</div><div class="sv">${ORDERS.length}</div><div class="ss">$${ORDERS.reduce((s,o)=>s+o.price*o.qty,0).toFixed(0)} total</div></div>
+  </div>
+  <div class="g2">
+    <div>
+      <div class="sh"><div class="st2">Active Projects</div><div class="sl2" onclick="go('manufacturing')">View all →</div></div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        ${PROJ.map(p=>`<div class="pc" onclick="viewProject(${p.id})">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px"><div class="pn">${p.name}</div><span class="tag ${tagCls(p.sub)}">${p.sub}</span></div>
+          <div class="pm">Due ${p.due} · ${p.mb.length} members · ${p.ts} tasks</div>
+          <div class="avs" style="margin-bottom:7px">${p.mb.map(m=>`<div class="av" style="background:hsl(${m.charCodeAt(0)*13%360},45%,38%)">${m}</div>`).join('')}</div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:10px;color:var(--tx2)">${p.st}</span><span style="font-size:10px;font-weight:600">${p.pct}%</span></div>
+          <div class="pb"><div class="pbf" style="width:${p.pct}%"></div></div>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div>
+      <div class="sh"><div class="st2">Upcoming Events</div><div class="sl2" onclick="go('calendar')">View all →</div></div>
+      ${EVS.filter(e=>e.vis==='all'||(currentUser&&effectiveRole()!=='student')).slice(0,3).map(e=>`<div class="ev">
+        <div class="ed"><div class="eday">${e.dt.replace(/\D.*$/,'')}</div><div class="emo">${e.dt.toLowerCase().includes('apr')?'APR':'MAY'}</div></div>
+        <div><div class="ett">${e.ti}</div><div class="esb">${e.type} · ${e.dt}</div></div>
+      </div>`).join('')}
+      <div class="dv"></div>
+      <div class="sh"><div class="st2">Recent Tasks</div><div class="sl2" onclick="go('tasks')">View all →</div></div>
+      ${TASKS.filter(t=>t.pct<100).slice(0,4).map(t=>`<div class="tr">
+        <div class="tc2 ${t.pct===100?'dn':''}"><svg width="8" height="8" viewBox="0 0 8 8" fill="none" style="${t.pct===100?'':'display:none'}"><polyline points="1,4 3,6 7,2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div style="flex:1;min-width:0">
+          <div class="tt">${t.ti}</div>
+          <div class="tm2" style="margin-top:2px;margin-bottom:5px"><span class="tag ${tagCls(t.cat)}">${t.cat}</span><span>·</span><span>${t.as}</span><span>·</span><span>${t.due}</span></div>
+          <div style="display:flex;align-items:center;gap:7px">
+            <div class="pb" style="flex:1"><div class="pbf" style="width:${t.pct}%;background:${t.pct===100?'var(--gr)':t.pct>=50?'var(--ye)':'var(--red)'}"></div></div>
+            <span style="font-size:10px;font-weight:600;color:var(--tx2)">${t.pct}%</span>
+          </div>
+        </div>
+      </div>`).join('')}
+    </div>
+  </div></div>`);
+}
+
+// ═══════════════════════════════════════════
+//  PROJECT DETAIL VIEW
+// ═══════════════════════════════════════════
+function viewProject(id){
+  const p = PROJ.find(p=>p.id===id);
+  if(!p) return;
+
+  // gather related data
+  const projTasks   = TASKS.filter(t=>t.project===p.name);
+  const projOrders  = ORDERS.filter(o=>o.project===p.name);
+  const projMfg     = MFG.filter(j=>j.part.startsWith('668-'+(p.name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase())));
+  const doneTasks   = projTasks.filter(t=>t.pct===100).length;
+  const activeOrds  = projOrders.filter(o=>!['ordered','delivered'].includes(o.status));
+  const orderedOrds = projOrders.filter(o=>['ordered','delivered'].includes(o.status));
+  const canEdit     = ['admin','captain','mentor'].includes(effectiveRole());
+
+  // update topbar
+  document.getElementById('ptitle').textContent = p.name;
+  document.getElementById('tba').innerHTML=`<button class="bsm" onclick="go('dashboard')" style="display:flex;align-items:center;gap:5px">
+    <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Back
+  </button>`;
+
+  // deactivate nav items since we're in a sub-view
+  document.querySelectorAll('.ni').forEach(e=>e.classList.remove('on'));
+
+  s(`<div class="pg">
+
+    <!-- PROJECT HEADER -->
+    <div style="background:var(--bg2);border:1px solid var(--b);border-radius:14px;padding:22px;margin-bottom:18px">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:5px">
+            <span style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700">${p.name}</span>
+            <span class="tag ${tagCls(p.sub)}">${p.sub}</span>
+          </div>
+          <div style="font-size:12px;color:var(--tx2)">Due ${p.due} &nbsp;·&nbsp; ${p.mb.length} members &nbsp;·&nbsp; ${p.st}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:${p.pct===100?'var(--gr)':p.pct>=50?'var(--ye)':'var(--red)'}">${p.pct}%</div>
+          <div style="font-size:11px;color:var(--tx2)">complete</div>
+        </div>
+      </div>
+      <div class="pb" style="height:8px;margin-bottom:14px"><div class="pbf" style="width:${p.pct}%;background:${p.pct===100?'var(--gr)':p.pct>=50?'var(--ye)':'var(--red)'}"></div></div>
+      <!-- stat pills -->
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        ${[
+          ['Tasks',`${doneTasks}/${projTasks.length}`,'var(--blue)'],
+          ['MFG Jobs',projMfg.length,'var(--ye)'],
+          ['Orders',projOrders.length,'var(--gr)'],
+          ['Members',p.mb.length,'var(--purple,#8b5cf6)'],
+        ].map(([lbl,val,col])=>`
+          <div style="background:var(--bg3);border:1px solid var(--b);border-radius:8px;padding:8px 14px;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:72px">
+            <span style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:${col}">${val}</span>
+            <span style="font-size:10px;color:var(--tx3)">${lbl}</span>
+          </div>`).join('')}
+        <!-- member avatars -->
+        <div style="display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--b);border-radius:8px;padding:8px 14px">
+          <div style="display:flex">${p.mb.map(m=>`<div class="av" style="background:hsl(${m.charCodeAt(0)*13%360},45%,38%);border-color:var(--bg3)">${m}</div>`).join('')}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="g2" style="gap:16px">
+
+      <!-- LEFT COL: Tasks + MFG -->
+      <div style="display:flex;flex-direction:column;gap:16px">
+
+        <!-- TASKS -->
+        <div class="card">
+          <div class="sh">
+            <div class="st2">Tasks <span style="font-size:11px;color:var(--tx3);font-weight:400">(${projTasks.length})</span></div>
+            ${canEdit?`<button class="bsm pr" style="font-size:11px;padding:4px 10px" onclick="cMdl();openTaskMdlForProject('${p.name}')">+ Add Task</button>`:''}
+          </div>
+          ${projTasks.length===0
+            ?`<div style="text-align:center;padding:20px;color:var(--tx3);font-size:12px">No tasks for this project yet.</div>`
+            :projTasks.map(t=>{
+              const done=t.pct===100;
+              const pc=done?'var(--gr)':t.pct>=50?'var(--ye)':'var(--red)';
+              return `<div class="tr" style="padding:10px 0">
+                <div style="flex:1;min-width:0">
+                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px">
+                    <div style="font-size:13px;font-weight:500;flex:1;${done?'text-decoration:line-through;color:var(--tx2)':''}">${t.ti}</div>
+                    <span class="sp ${done?'sp-d':t.pct>0?'sp-p':'sp-n'}" style="flex-shrink:0">${done?'Complete':t.pct>0?'In Progress':'Not Started'}</span>
+                    ${canEdit?`<div class="act-btns"><div class="act-btn edit" title="Edit" onclick="editTask(${t.id})"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div></div>`:''}
+                  </div>
+                  <div style="font-size:11px;color:var(--tx2);margin-bottom:5px;display:flex;gap:6px;flex-wrap:wrap">
+                    <span class="tag ${tagCls(t.cat)}">${t.cat}</span><span>${t.as}</span><span>·</span><span>Due ${t.due}</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:7px">
+                    <div style="flex:1;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;cursor:${canEdit?'pointer':'default'}"
+                      onclick="${canEdit?`setTaskPct(${t.id},event,this);setTimeout(()=>viewProject(${p.id}),50)`:''}" title="${canEdit?'Click to update':''}" >
+                      <div style="height:100%;width:${t.pct}%;background:${pc};border-radius:2px"></div>
+                    </div>
+                    <span style="font-size:10px;font-weight:600;color:${pc};min-width:28px;text-align:right">${t.pct}%</span>
+                  </div>
+                </div>
+              </div>`;
+            }).join('')
+          }
+        </div>
+
+        <!-- MFG JOBS -->
+        <div class="card">
+          <div class="sh">
+            <div class="st2">Manufacturing Jobs <span style="font-size:11px;color:var(--tx3);font-weight:400">(${projMfg.length})</span></div>
+            ${canEdit?`<button class="bsm pr" style="font-size:11px;padding:4px 10px" onclick="mt='mfg';go('manufacturing');setTimeout(openMfgMdl,80)">+ Add Job</button>`:''}
+          </div>
+          ${projMfg.length===0
+            ?`<div style="text-align:center;padding:20px;color:var(--tx3);font-size:12px">No manufacturing jobs linked.</div>`
+            :`<table class="tbl" style="font-size:11px">
+              <thead><tr><th>Part #</th><th>Description</th><th>Machine</th><th>Status</th><th>Drawing</th></tr></thead>
+              <tbody>${projMfg.map(j=>`<tr>
+                <td style="color:var(--red);font-weight:600">${j.part}</td>
+                <td>${j.desc}</td>
+                <td style="color:var(--tx2)">${j.mach}</td>
+                <td><span class="sp ${{new:'sp-n',design:'sp-r',mfg:'sp-p',complete:'sp-d'}[j.st]}">${{new:'New',design:'Design Review',mfg:'In Mfg',complete:'Complete'}[j.st]}</span></td>
+                <td style="color:var(--tx3)">${j.drawing&&j.drawing!=='—'&&j.drawing!=='Not necessary'?`<span style="color:var(--red)">${j.drawing}</span>`:j.drawing||'—'}</td>
+              </tr>`).join('')}</tbody>
+            </table>`
+          }
+        </div>
+      </div>
+
+      <!-- RIGHT COL: Orders + Events -->
+      <div style="display:flex;flex-direction:column;gap:16px">
+
+        <!-- ORDERS -->
+        <div class="card">
+          <div class="sh">
+            <div class="st2">Purchase Orders <span style="font-size:11px;color:var(--tx3);font-weight:400">(${projOrders.length})</span></div>
+            ${canEdit?`<button class="bsm pr" style="font-size:11px;padding:4px 10px" onclick="ordFilter='${p.name}';mt='orders';go('manufacturing')">View All</button>`:''}
+          </div>
+          ${projOrders.length===0
+            ?`<div style="text-align:center;padding:20px;color:var(--tx3);font-size:12px">No purchase orders for this project.</div>`
+            :`<div>
+              <!-- active -->
+              ${activeOrds.map(o=>`
+              <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--b);cursor:pointer" onclick="viewOrder(${ORDERS.indexOf(o)})">
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:12px;font-weight:500">${o.name}</div>
+                  <div style="font-size:10px;color:var(--tx2);margin-top:1px">${o.part} · qty ${o.qty}</div>
+                </div>
+                <div style="font-size:12px;font-weight:700;color:var(--gr)">$${(o.price*o.qty).toFixed(2)}</div>
+                ${ordStatusBadge(o.status)}
+              </div>`).join('')}
+              <!-- ordered -->
+              ${orderedOrds.length>0?`<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--b)">
+                <div style="font-size:10px;color:var(--tx3);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Ordered / Delivered</div>
+                ${orderedOrds.map(o=>`
+                <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--b);cursor:pointer;opacity:.8" onclick="viewOrder(${ORDERS.indexOf(o)})">
+                  <div style="width:6px;height:6px;border-radius:50%;background:${o.status==='delivered'?'var(--gr)':'#fbbf24'};flex-shrink:0"></div>
+                  <div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:500">${o.name}</div></div>
+                  <div style="font-size:12px;font-weight:700;color:var(--tx2)">$${(o.price*o.qty).toFixed(2)}</div>
+                  ${ordStatusBadge(o.status)}
+                </div>`).join('')}
+              </div>`:'' }
+              <!-- total -->
+              <div style="display:flex;justify-content:space-between;padding-top:10px;margin-top:4px">
+                <span style="font-size:11px;color:var(--tx2);font-weight:600">Project Total</span>
+                <span style="font-size:13px;font-weight:700;color:var(--red)">$${projOrders.reduce((s,o)=>s+(o.price*o.qty),0).toFixed(2)}</span>
+              </div>
+            </div>`
+          }
+        </div>
+
+        <!-- RELATED EVENTS -->
+        <div class="card">
+          <div class="sh"><div class="st2">Related Events</div></div>
+          ${EVS.filter(e=>e.ti.toLowerCase().includes(p.name.split(' ')[0].toLowerCase())||e.desc?.toLowerCase().includes(p.name.toLowerCase())).length===0
+            ?`<div style="text-align:center;padding:16px;color:var(--tx3);font-size:12px">No events linked to this project.</div>`
+            :EVS.filter(e=>e.ti.toLowerCase().includes(p.name.split(' ')[0].toLowerCase())||e.desc?.toLowerCase().includes(p.name.toLowerCase())).map(e=>`
+              <div class="ev" style="margin-bottom:7px">
+                <div class="ed"><div class="eday">${e.dt.replace(/\D.*$/,'')}</div><div class="emo">${e.dt.toLowerCase().includes('apr')?'APR':'MAY'}</div></div>
+                <div><div class="ett">${e.ti}</div><div class="esb">${e.type} · ${e.dt}</div></div>
+              </div>`).join('')
+          }
+        </div>
+
+        <!-- QUICK ACTIONS -->
+        ${canEdit?`<div class="card">
+          <div class="sh"><div class="st2">Quick Actions</div></div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <button class="bsm" style="text-align:left" onclick="openTaskMdlForProject('${p.name}')">+ Add task to this project</button>
+            <button class="bsm" style="text-align:left" onclick="ordFilter='${p.name}';mt='orders';go('manufacturing')">View all orders →</button>
+            <button class="bsm" style="text-align:left" onclick="taskProjFilter='${p.name}';go('tasks')">View all tasks →</button>
+            <button class="bsm" style="text-align:left" onclick="mt='mfg';mfgMachFilter='all';go('manufacturing')">View MFG jobs →</button>
+          </div>
+        </div>`:''}
+      </div>
+    </div>
+  </div>`);
+}
+
+function openTaskMdlForProject(projName){
+  openTaskMdl();
+  // pre-select the project after modal renders
+  setTimeout(()=>{
+    const sel=document.getElementById('nt-proj');
+    if(sel){
+      for(let i=0;i<sel.options.length;i++){
+        if(sel.options[i].text===projName){ sel.selectedIndex=i; break; }
+      }
+    }
+  },50);
+}
+// Ensure all tasks have a progress field — runs lazily on first rTasks call
+
+function taskRow(t, canEdit){
+  const done = t.pct === 100;
+  const pctColor = done ? 'var(--gr)' : t.pct >= 50 ? 'var(--ye)' : 'var(--red)';
+  return `<div class="tr task-item" data-id="${t.id}" data-done="${done}">
+    <div style="flex:1;min-width:0">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <div class="tt" style="${done?'text-decoration:line-through;color:var(--tx2)':''};flex:1;cursor:pointer"
+          onclick="viewTask(${t.id})" title="View task details">
+          ${t.ti}
+        </div>
+        <span class="sp ${done?'sp-d':t.pct>0?'sp-p':'sp-n'}" style="flex-shrink:0">${done?'Complete':t.pct>0?'In Progress':'Not Started'}</span>
+        ${canEdit?`<div class="act-btns">
+          <div class="act-btn edit" title="Edit task" onclick="editTask(${t.id})"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+          <div class="act-btn del" title="Delete task" onclick="delTask(${t.id})"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg></div>
+        </div>`:''}
+      </div>
+      <div style="font-size:11px;color:var(--tx2);margin-bottom:6px">${t.desc}</div>
+      <div class="tm2" style="margin-bottom:8px">
+        <span class="tag ${tagCls(t.cat)}">${t.cat}</span>
+        ${t.project?`<span>·</span><span style="font-size:10px;background:var(--red-g);color:var(--red);padding:2px 7px;border-radius:4px;font-weight:500;cursor:pointer" onclick="viewProject(${PROJ.find(p=>p.name===t.project)?.id||0})">${t.project}</span>`:''}
+        <span>·</span><span>${t.as}</span><span>·</span><span>Due ${t.due}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:9px">
+        <div style="flex:1;position:relative;height:6px;background:var(--bg4);border-radius:3px;overflow:visible;cursor:${canEdit?'pointer':'default'}"
+             onclick="${canEdit?`setTaskPct(${t.id},event,this)`:''}"
+             title="${canEdit?'Click to set progress':''}">
+          <div style="height:100%;width:${t.pct}%;background:${pctColor};border-radius:3px;transition:width .25s;pointer-events:none"></div>
+        </div>
+        <span style="font-size:11px;font-weight:600;min-width:30px;text-align:right;color:${pctColor}">${t.pct}%</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+function viewTask(id){
+  const t = TASKS.find(t=>t.id===id);
+  if(!t) return;
+  const canEdit = ['admin','captain','mentor'].includes(effectiveRole());
+  const done = t.pct === 100;
+  const pctColor = done ? 'var(--gr)' : t.pct >= 50 ? 'var(--ye)' : 'var(--red)';
+  const proj = PROJ.find(p=>p.name===t.project);
+
+  // find related tasks in same project
+  const relatedTasks = t.project
+    ? TASKS.filter(rt=>rt.project===t.project && rt.id!==t.id).slice(0,4)
+    : [];
+
+  mdl(`
+    <!-- header -->
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:16px">
+      <div style="flex:1;min-width:0">
+        <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;line-height:1.3;${done?'text-decoration:line-through;color:var(--tx2)':''}">${t.ti}</div>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:6px;flex-wrap:wrap">
+          <span class="tag ${tagCls(t.cat)}">${t.cat}</span>
+          ${t.project?`<span style="font-size:10px;background:var(--red-g);color:var(--red);padding:2px 7px;border-radius:4px;font-weight:500">${t.project}</span>`:''}
+          <span class="sp ${done?'sp-d':t.pct>0?'sp-p':'sp-n'}">${done?'Complete':t.pct>0?'In Progress':'Not Started'}</span>
+        </div>
+      </div>
+      ${canEdit?`<div class="act-btns" style="flex-shrink:0">
+        <div class="act-btn edit" title="Edit" onclick="cMdl();editTask(${t.id})"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+      </div>`:''}
+    </div>
+
+    <!-- progress bar -->
+    <div style="margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+        <span style="font-size:11px;font-weight:500;color:var(--tx2)">Progress</span>
+        <span style="font-size:11px;font-weight:700;color:${pctColor}">${t.pct}%</span>
+      </div>
+      <div style="height:8px;background:var(--bg4);border-radius:4px;overflow:hidden;${canEdit?'cursor:pointer':''})"
+        ${canEdit?`onclick="setTaskPctMdl(${t.id},event,this)"` : ''} title="${canEdit?'Click to set progress':''}">
+        <div style="height:100%;width:${t.pct}%;background:${pctColor};border-radius:4px;transition:width .3s;pointer-events:none"></div>
+      </div>
+      ${canEdit?`<div style="display:flex;justify-content:space-between;margin-top:4px">
+        <span style="font-size:10px;color:var(--tx3)">0%</span>
+        <span style="font-size:10px;color:var(--tx3)">50%</span>
+        <span style="font-size:10px;color:var(--tx3)">100%</span>
+      </div>`:''}
+    </div>
+
+    <!-- info grid -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
+      ${[
+        ['Assignee', t.as],
+        ['Due Date', t.due],
+        ['Category', t.cat],
+        ['Project',  t.project || '—'],
+      ].map(([lbl,val])=>`
+        <div style="background:var(--bg3);border-radius:8px;padding:10px 12px">
+          <div style="font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:3px">${lbl}</div>
+          <div style="font-size:13px;font-weight:500">${val}</div>
+        </div>`).join('')}
+    </div>
+
+    <!-- description -->
+    <div style="background:var(--bg3);border-radius:8px;padding:12px;margin-bottom:${relatedTasks.length?'14px':'4px'}">
+      <div style="font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:6px">Description</div>
+      <div style="font-size:13px;color:var(--tx2);line-height:1.6">${t.desc||'No description provided.'}</div>
+    </div>
+
+    <!-- related tasks in same project -->
+    ${relatedTasks.length?`
+    <div style="margin-bottom:4px">
+      <div style="font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:8px">Other Tasks in ${t.project}</div>
+      ${relatedTasks.map(rt=>{
+        const rdone=rt.pct===100;
+        const rc=rdone?'var(--gr)':rt.pct>=50?'var(--ye)':'var(--red)';
+        return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--b);cursor:pointer" onclick="cMdl();viewTask(${rt.id})">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:12px;font-weight:500;${rdone?'text-decoration:line-through;color:var(--tx2)':''}">${rt.ti}</div>
+            <div style="font-size:10px;color:var(--tx3);margin-top:1px">${rt.as} · Due ${rt.due}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;flex-shrink:0">
+            <div style="width:60px;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden">
+              <div style="height:100%;width:${rt.pct}%;background:${rc};border-radius:2px"></div>
+            </div>
+            <span style="font-size:10px;font-weight:600;color:${rc};min-width:26px">${rt.pct}%</span>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`:''}
+
+    <div class="mft" style="margin-top:16px">
+      <button class="bsm" onclick="cMdl()">Close</button>
+      ${t.project&&proj?`<button class="bsm" onclick="cMdl();viewProject(${proj.id})">View Project →</button>`:''}
+      ${canEdit?`<button class="bsm pr" onclick="cMdl();editTask(${t.id})">Edit Task</button>`:''}
+    </div>`);
+}
+
+function setTaskPctMdl(id, e, bar){
+  const t=TASKS.find(t=>t.id===id); if(!t)return;
+  const rect=bar.getBoundingClientRect();
+  let pct=Math.round((e.clientX-rect.left)/rect.width*100);
+  pct=Math.max(0,Math.min(100,pct));
+  if(pct>=95) pct=100;
+  t.pct=pct;
+  t.st=pct===100?'Complete':pct>0?'In Progress':'Not Started';
+  document.getElementById('taskBadge').textContent=TASKS.filter(t=>t.pct<100).length;
+  // re-render the progress bar in the modal
+  const fill=bar.querySelector('div');
+  const pctColor=pct===100?'var(--gr)':pct>=50?'var(--ye)':'var(--red)';
+  if(fill){fill.style.width=pct+'%';fill.style.background=pctColor;}
+  bar.closest('.mdl').querySelector('.sp')?.classList.replace(
+    bar.closest('.mdl').querySelector('.sp').className.match(/sp-\w+/)?.[0]||'sp-n',
+    pct===100?'sp-d':pct>0?'sp-p':'sp-n'
+  );
+}
+
+function rTasks(){
+  const canEdit=['admin','captain','mentor'].includes(effectiveRole());
+  if(canEdit) document.getElementById('tba').innerHTML=`<button class="bsm pr" onclick="openTaskMdl()">+ New Task</button>`;
+  const cats=['all','design','outreach','business','machining','programming','controls','media','electrical'];
+
+  // project filter options — all projects from PROJ + any custom ones on tasks
+  const projOptions=['all',...new Set([...PROJ.map(p=>p.name),...TASKS.map(t=>t.project).filter(Boolean)])].filter((v,i,a)=>a.indexOf(v)===i);
+
+  // apply both filters
+  const filtered=TASKS.filter(t=>
+    (tf==='all'||t.cat===tf) &&
+    (taskProjFilter==='all'||t.project===taskProjFilter)
+  );
+  const active   = filtered.filter(t=>t.pct < 100);
+  const completed= filtered.filter(t=>t.pct === 100);
+  const total=filtered.length, done=completed.length;
+
+  s(`<div class="pg">
+  <!-- search + project filter row -->
+  <div style="display:flex;gap:9px;margin-bottom:12px;align-items:center;flex-wrap:wrap">
+    <div class="srch" style="flex:1;min-width:180px;margin-bottom:0">
+      <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:var(--tx3);flex-shrink:0"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input placeholder="Search tasks or assignee..." id="task-search-inp" oninput="fts(this.value)">
+    </div>
+    <!-- project dropdown -->
+    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+      <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:var(--tx3)"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <select class="fs" style="padding:6px 10px;font-size:12px" onchange="taskProjFilter=this.value;rTasks()">
+        ${projOptions.map(p=>`<option value="${p}"${taskProjFilter===p?' selected':''}>${p==='all'?'All Projects':p}</option>`).join('')}
+      </select>
+    </div>
+  </div>
+
+  <!-- subsystem pills -->
+  <div class="pills">${cats.map(c=>`<div class="pill ${tf===c?'on':''}" onclick="stf('${c}')">${c[0].toUpperCase()+c.slice(1)}</div>`).join('')}</div>
+
+  <!-- overall progress -->
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:12px 14px;background:var(--bg3);border:1px solid var(--b);border-radius:10px">
+    <div style="flex:1">
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+        <span style="font-size:11px;font-weight:500;color:var(--tx2)">
+          ${taskProjFilter==='all'?'Overall Progress':`${taskProjFilter} Progress`}
+        </span>
+        <span style="font-size:11px;font-weight:600">${done}/${total} complete</span>
+      </div>
+      <div class="pb"><div class="pbf" style="width:${total?Math.round(done/total*100):0}%;background:var(--gr)"></div></div>
+    </div>
+    <span style="font-size:18px;font-weight:700;font-family:'Syne',sans-serif;color:var(--gr);min-width:40px;text-align:right">${total?Math.round(done/total*100):0}%</span>
+  </div>
+
+  <!-- active tasks -->
+  <div class="card" style="margin-bottom:14px" id="active-tasks">
+    ${active.length===0?'<div style="text-align:center;padding:20px;color:var(--tx3);font-size:13px">All tasks complete 🎉</div>':''}
+    ${active.map(t=>taskRow(t,canEdit)).join('')}
+  </div>
+
+  <!-- completed section -->
+  ${completed.length>0?`
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;cursor:pointer" onclick="toggleCompleted()" id="completed-hdr">
+    <svg id="completed-chev" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    <span style="font-size:12px;font-weight:600;color:var(--tx2)">Completed (${completed.length})</span>
+    <div style="flex:1;height:1px;background:var(--b)"></div>
+  </div>
+  <div class="card" id="completed-tasks">
+    ${completed.map(t=>taskRow(t,canEdit)).join('')}
+  </div>`:''}
+  </div>`);
+}
+
+function setTaskPct(id, e, bar){
+  const t=TASKS.find(t=>t.id===id); if(!t)return;
+  const rect=bar.getBoundingClientRect();
+  let pct=Math.round((e.clientX-rect.left)/rect.width*100);
+  pct=Math.max(0,Math.min(100,pct));
+  // snap to 100 if within 5px of end
+  if(pct>=95) pct=100;
+  t.pct=pct;
+  t.st=pct===100?'Complete':pct>0?'In Progress':'Not Started';
+  document.getElementById('taskBadge').textContent=TASKS.filter(t=>t.pct<100).length;
+  rTasks();
+}
+
+let completedOpen=true;
+function toggleCompleted(){
+  completedOpen=!completedOpen;
+  const el=document.getElementById('completed-tasks');
+  const chev=document.getElementById('completed-chev');
+  if(el) el.style.display=completedOpen?'':'none';
+  if(chev) chev.style.transform=completedOpen?'':'rotate(-90deg)';
+}
+
+function stf(f){tf=f;rTasks();}
+function fts(v){
+  v=v.toLowerCase();
+  document.querySelectorAll('.task-item').forEach(r=>{
+    r.style.display=r.textContent.toLowerCase().includes(v)?'':'none';
+  });
+}
+function openTaskMdl(){
+  const projOpts=PROJ.map(p=>`<option>${p.name}</option>`).join('');
+  mdl(`<div class="mttl">Create New Task</div>
+  <div class="fg"><label class="fl">Title</label><input class="fi" id="nt-t" placeholder="Task title..."></div>
+  <div class="fg"><label class="fl">Description</label><textarea class="fi" id="nt-d" rows="2" placeholder="Details..."></textarea></div>
+  <div class="g2" style="gap:9px">
+    <div class="fg"><label class="fl">Assignee</label><select class="fs" id="nt-a">${Object.values(ROLE_DB).map(u=>`<option>${u.name}</option>`).join('')}</select></div>
+    <div class="fg"><label class="fl">Category</label><select class="fs" id="nt-c">${['design','outreach','business','machining','programming','controls','media','electrical'].map(c=>`<option>${c}</option>`).join('')}</select></div>
+  </div>
+  <div class="g2" style="gap:9px">
+    <div class="fg"><label class="fl">Project</label>
+      <select class="fs" id="nt-proj">
+        <option value="">— None —</option>
+        ${projOpts}
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Due Date</label><input class="fi" id="nt-du" placeholder="e.g. May 1"></div>
+  </div>
+  <div class="fg"><label class="fl">Initial Progress (%)</label>
+    <div style="display:flex;align-items:center;gap:10px">
+      <input type="range" id="nt-pct" min="0" max="100" step="5" value="0" oninput="document.getElementById('nt-pct-val').textContent=this.value+'%'" style="flex:1;accent-color:var(--red)">
+      <span id="nt-pct-val" style="font-size:12px;font-weight:600;min-width:34px;color:var(--red)">0%</span>
+    </div>
+  </div>
+  <div class="mft"><button class="bsm" onclick="cMdl()">Cancel</button><button class="bsm pr" onclick="crTask()">Create</button></div>`);
+}
+function crTask(){
+  const t=gv('nt-t');if(!t)return;
+  const pct=parseInt(document.getElementById('nt-pct')?.value||0);
+  TASKS.unshift({id:Date.now(),ti:t,desc:gv('nt-d'),as:gv('nt-a'),cat:gv('nt-c'),project:gv('nt-proj'),st:pct===100?'Complete':pct>0?'In Progress':'Not Started',due:gv('nt-du')||'TBD',pct});
+  document.getElementById('taskBadge').textContent=TASKS.filter(t=>t.pct<100).length;
+  cMdl();rTasks();
+}
+function editTask(id){
+  const t=TASKS.find(t=>t.id===id);if(!t)return;
+  const projOpts=PROJ.map(p=>`<option${p.name===t.project?' selected':''}>${p.name}</option>`).join('');
+  mdl(`<div class="mttl">Edit Task</div>
+  <div class="fg"><label class="fl">Title</label><input class="fi" id="et-t" value="${t.ti}"></div>
+  <div class="fg"><label class="fl">Description</label><textarea class="fi" id="et-d" rows="2">${t.desc}</textarea></div>
+  <div class="g2" style="gap:9px">
+    <div class="fg"><label class="fl">Assignee</label><select class="fs" id="et-a">${Object.values(ROLE_DB).map(u=>`<option${u.name===t.as?' selected':''}>${u.name}</option>`).join('')}</select></div>
+    <div class="fg"><label class="fl">Category</label><select class="fs" id="et-c">${['design','outreach','business','machining','programming','controls','media','electrical'].map(c=>`<option${c===t.cat?' selected':''}>${c}</option>`).join('')}</select></div>
+  </div>
+  <div class="g2" style="gap:9px">
+    <div class="fg"><label class="fl">Project</label>
+      <select class="fs" id="et-proj">
+        <option value=""${!t.project?' selected':''}>— None —</option>
+        ${projOpts}
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Due Date</label><input class="fi" id="et-du" value="${t.due}"></div>
+  </div>
+  <div class="fg"><label class="fl">Progress (%)</label>
+    <div style="display:flex;align-items:center;gap:10px">
+      <input type="range" id="et-pct" min="0" max="100" step="5" value="${t.pct}" oninput="document.getElementById('et-pct-val').textContent=this.value+'%'" style="flex:1;accent-color:var(--red)">
+      <span id="et-pct-val" style="font-size:12px;font-weight:600;min-width:34px;color:var(--red)">${t.pct}%</span>
+    </div>
+  </div>
+  <div class="mft">
+    <button class="bsm" onclick="cMdl()">Cancel</button>
+    <button class="bsm pr" onclick="saveTask(${id})">Save Changes</button>
+  </div>`);
+}
+function saveTask(id){
+  const t=TASKS.find(t=>t.id===id);if(!t)return;
+  const pct=parseInt(document.getElementById('et-pct')?.value||0);
+  t.ti=gv('et-t'); t.desc=gv('et-d'); t.as=gv('et-a'); t.cat=gv('et-c');
+  t.project=gv('et-proj'); t.due=gv('et-du'); t.pct=pct;
+  t.st=pct===100?'Complete':pct>0?'In Progress':'Not Started';
+  document.getElementById('taskBadge').textContent=TASKS.filter(t=>t.pct<100).length;
+  cMdl();rTasks();
+}
+function delTask(id){
+  const t=TASKS.find(t=>t.id===id);if(!t)return;
+  mdl(`<div class="mttl">Delete Task?</div>
+  <div style="background:var(--bg3);border-radius:9px;padding:14px;margin-bottom:4px">
+    <div style="font-weight:600;font-size:13px">${t.ti}</div>
+    <div style="font-size:11px;color:var(--tx2);margin-top:2px">${t.as} · ${t.cat} · Due ${t.due}</div>
+  </div>
+  <div style="font-size:12px;color:#f87171;margin:12px 0">This action cannot be undone.</div>
+  <div class="mft"><button class="bsm" onclick="cMdl()">Cancel</button><button class="bsm" style="background:rgba(239,68,68,.15);color:#f87171;border-color:rgba(239,68,68,.3)" onclick="TASKS.splice(TASKS.findIndex(t=>t.id===${id}),1);document.getElementById('taskBadge').textContent=TASKS.filter(t=>t.pct<100).length;cMdl();rTasks()">Delete</button></div>`);
+}
+
+// ═══════════════════════════════════════════
+//  MANUFACTURING
+// ═══════════════════════════════════════════
+function rMfg(){
+  const isMentor=['admin','mentor'].includes(effectiveRole());
+  s(`<div class="pg"><div class="tabs">
+    <div class="tab ${mt==='projects'?'on':''}" onclick="mt='projects';rMfg()">Projects</div>
+    <div class="tab ${mt==='mfg'?'on':''}" onclick="mt='mfg';rMfg()">Manufacturing</div>
+    <div class="tab ${mt==='orders'?'on':''}" onclick="mt='orders';rMfg()">Orders</div>
+    ${isMentor?`<div class="tab ${mt==='rto'?'on':''}" onclick="mt='rto';rMfg()" style="${mt!=='rto'?'border:1px solid rgba(251,191,36,.3);color:#fbbf24':''}">
+      🛒 Ready to Order
+    </div>`:''}
+  </div><div id="mc"></div></div>`);
+  if(mt==='projects') rMfgP();
+  else if(mt==='mfg') rMfgJ();
+  else if(mt==='rto') rReadyToOrder();
+  else rOrd();
+}
+function rMfgP(){document.getElementById('mc').innerHTML=PROJ.map(p=>`<div class="card mb13" style="cursor:pointer;transition:all .18s" onmouseover="this.style.borderColor='var(--red)'" onmouseout="this.style.borderColor=''" onclick="viewProject(${p.id})">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+    <div>
+      <div style="font-weight:600;font-size:13px">${p.name}</div>
+      <div style="font-size:11px;color:var(--tx2);margin-top:2px">${p.sub} · ${p.ts} tasks · Due ${p.due}</div>
+    </div>
+    <div style="display:flex;gap:6px;align-items:center">
+      <span class="sp sp-p">${p.st}</span>
+      <span style="font-size:11px;color:var(--red)">View →</span>
+    </div>
+  </div>
+  <div class="pb" style="margin-bottom:9px"><div class="pbf" style="width:${p.pct}%"></div></div>
+  <div style="font-size:11px;color:var(--tx2)">
+    MFG Jobs: ${MFG.filter(j=>j.part.includes(p.name.split(' ')[1]?.substring(0,2).toUpperCase()||'XX')).length} linked &nbsp;·&nbsp;
+    Tasks: ${TASKS.filter(t=>t.project===p.name).length} &nbsp;·&nbsp;
+    Orders: ${ORDERS.filter(o=>o.project===p.name).length}
+  </div>
+</div>`).join('');}
+function rMfgJ(){
+  document.getElementById('tba').innerHTML=`<button class="bsm pr" onclick="openMfgMdl()">+ New Job</button>`;
+  const stLabel={new:'New Part',design:'Design Review',mfg:'In Mfg Review',complete:'Complete'};
+  const stCls={new:'sp-n',design:'sp-r',mfg:'sp-p',complete:'sp-d'};
+
+  // Build unique machine list from actual data + standard list
+  const stdMachines=['Lathe','CNC Mill','Manual Mill','Router','3D Printer'];
+  const dataMachines=[...new Set(MFG.map(j=>j.mach).filter(Boolean))];
+  const allMachines=['all',...new Set([...stdMachines,...dataMachines])];
+
+  const filtered = mfgMachFilter==='all' ? MFG : MFG.filter(j=>j.mach===mfgMachFilter);
+
+  document.getElementById('mc').innerHTML=`
+    <!-- machine filter pills -->
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
+        ${allMachines.map(m=>{
+          const count = m==='all' ? MFG.length : MFG.filter(j=>j.mach===m).length;
+          if(m!=='all'&&count===0) return '';
+          return `<div class="pill ${mfgMachFilter===m?'on':''}"
+            style="display:flex;align-items:center;gap:5px"
+            onclick="mfgMachFilter='${m}';rMfgJ()">
+            ${m==='all'?'All':m}
+            <span style="background:${mfgMachFilter===m?'rgba(255,255,255,.25)':'var(--bg4)'};color:${mfgMachFilter===m?'#fff':'var(--tx3)'};border-radius:10px;padding:0 5px;font-size:10px;font-weight:600">${count}</span>
+          </div>`;
+        }).join('')}
+      </div>
+      <div style="margin-left:auto;font-size:12px;color:var(--tx2)">
+        ${filtered.length} job${filtered.length!==1?'s':''} &nbsp;·&nbsp;
+        <span style="color:var(--gr)">${filtered.filter(j=>j.st==='complete').length} complete</span> &nbsp;·&nbsp;
+        <span style="color:var(--ye)">${filtered.filter(j=>j.st==='design'||j.st==='mfg').length} in review</span> &nbsp;·&nbsp;
+        <span style="color:var(--blue)">${filtered.filter(j=>j.st==='new').length} new</span>
+      </div>
+    </div>
+
+    <!-- table -->
+    <div class="card" style="overflow-x:auto">
+      <table class="tbl">
+        <thead><tr>
+          <th>Part #</th><th>Description</th><th>Machine</th><th>Material</th><th>Rev</th><th>Status</th><th>Assignee</th><th>Drawing</th><th>Updated</th><th></th>
+        </tr></thead>
+        <tbody>
+          ${filtered.length===0
+            ?`<tr><td colspan="10" style="text-align:center;padding:24px;color:var(--tx3)">No jobs for this machine.</td></tr>`
+            :filtered.map((j)=>{
+              const i=MFG.indexOf(j);
+              return `<tr id="mfgr-${i}">
+                <td style="color:var(--red);font-weight:600">${j.part}</td>
+                <td>${j.desc}</td>
+                <td>
+                  <span style="display:inline-flex;align-items:center;gap:5px">
+                    <span style="width:7px;height:7px;border-radius:50%;background:${machColor(j.mach)};flex-shrink:0"></span>
+                    <span style="color:var(--tx2)">${j.mach}</span>
+                  </span>
+                </td>
+                <td style="color:var(--tx2)">${j.mat}</td>
+                <td><span class="sp sp-n">Rev ${j.rev}</span></td>
+                <td><span class="sp ${stCls[j.st]}">${stLabel[j.st]}</span></td>
+                <td>${j.as}</td>
+                <td style="font-size:11px">${drawingCell(j)}</td>
+                <td style="color:var(--tx3)">${j.upd}</td>
+                <td><div class="act-btns">
+                  <div class="act-btn edit" title="Edit" onclick="editMfgJob(${i})"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+                  <div class="act-btn del" title="Delete" onclick="delMfgJob(${i})"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg></div>
+                </div></td>
+              </tr>`;
+            }).join('')}
+        </tbody>
+      </table>
+    </div>`;
+}
+
+function machColor(m){
+  const map={
+    'Lathe':'#60a5fa',
+    'CNC Mill':'#f59e0b',
+    'Manual Mill':'#fb923c',
+    'Router':'#a78bfa',
+    '3D Printer':'#34d399',
+  };
+  return map[m]||'#9090a0';
+}
+function drawingCell(j){
+  const name = j.drawing || '—';
+  // no file — just plain text
+  if(!name || name === '—' || name === 'Not necessary'){
+    return `<span style="color:var(--tx3)">${name||'—'}</span>`;
+  }
+  // has a real blob we can download
+  if(j.blob){
+    return `<span
+      onclick="dlDrawing(${MFG.indexOf(j)})"
+      title="Click to download ${name}"
+      style="color:var(--red);cursor:pointer;display:inline-flex;align-items:center;gap:4px;text-decoration:underline;text-underline-offset:2px;text-decoration-style:dotted">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      ${name}
+    </span>`;
+  }
+  // has a filename string but no blob (pre-seeded demo data)
+  return `<span style="color:var(--tx2);display:inline-flex;align-items:center;gap:4px" title="File not available in demo">
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="opacity:.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    ${name}
+  </span>`;
+}
+function dlDrawing(i){
+  const j = MFG[i];
+  if(!j?.blob){ return; }
+  const url = URL.createObjectURL(j.blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = j.drawing || j.blob.name || 'drawing.pdf';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  // revoke after a tick so the download has time to start
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+}
+function editMfgJob(i){
+  const j=MFG[i];
+  mdl(`<div class="mttl">Edit Manufacturing Job</div>
+  <div class="g2" style="gap:9px"><div class="fg"><label class="fl">Part Number</label><input class="fi" id="ej-p" value="${j.part}"></div><div class="fg"><label class="fl">Revision</label><input class="fi" id="ej-r" value="${j.rev}"></div></div>
+  <div class="fg"><label class="fl">Description</label><input class="fi" id="ej-d" value="${j.desc}"></div>
+  <div class="g2" style="gap:9px">
+    <div class="fg"><label class="fl">Machine</label>
+      <select class="fs" id="ej-m" onchange="toggleMachCustom('ej')">
+        ${['Lathe','CNC Mill','Manual Mill','Router','3D Printer','Custom'].map(m=>`<option${(m===j.mach||(!['Lathe','CNC Mill','Manual Mill','Router','3D Printer'].includes(j.mach)&&m==='Custom'))?` selected`:''}>${m}</option>`).join('')}
+      </select>
+      <input class="fi" id="ej-m-custom" placeholder="Specify machine name..."
+        style="margin-top:6px;display:${['Lathe','CNC Mill','Manual Mill','Router','3D Printer'].includes(j.mach)?'none':'block'}"
+        value="${['Lathe','CNC Mill','Manual Mill','Router','3D Printer'].includes(j.mach)?'':j.mach}">
+    </div>
+    <div class="fg"><label class="fl">Material</label><select class="fs" id="ej-mt">${['Aluminum Billet','Aluminum L Bracket','Aluminum Sheets','Polycarbonate','Brass','SRPP','Delrin','Acrylic','Wood','PLA-CF','PLA','PETG','ASA','ABS','Custom'].map(m=>`<option${m===j.mat?' selected':''}>${m}</option>`).join('')}</select></div>
+  </div>
+  <div class="g2" style="gap:9px">
+    <div class="fg"><label class="fl">Status</label><select class="fs" id="ej-s"><option value="new"${j.st==='new'?' selected':''}>New Part</option><option value="design"${j.st==='design'?' selected':''}>In Design Review</option><option value="mfg"${j.st==='mfg'?' selected':''}>In Mfg Review</option><option value="complete"${j.st==='complete'?' selected':''}>Complete</option></select></div>
+    <div class="fg"><label class="fl">Assignee</label><select class="fs" id="ej-a">${Object.values(ROLE_DB).map(u=>`<option${u.name===j.as?' selected':''}>${u.name}</option>`).join('')}</select></div>
+  </div>
+  <div class="fg"><label class="fl">Drawing</label><input class="fi" id="ej-dr" value="${j.drawing||''}"></div>
+  <div class="mft"><button class="bsm" onclick="cMdl()">Cancel</button><button class="bsm pr" onclick="saveMfgJob(${i})">Save Changes</button></div>`);
+}
+function saveMfgJob(i){
+  MFG[i]={...MFG[i],part:gv('ej-p'),rev:gv('ej-r'),desc:gv('ej-d'),mach:getMach('ej'),mat:gv('ej-mt'),st:gv('ej-s'),as:gv('ej-a'),drawing:gv('ej-dr'),upd:'Today'};
+  cMdl();rMfg();
+}
+function delMfgJob(i){
+  const j=MFG[i];
+  mdl(`<div class="mttl">Delete Manufacturing Job?</div>
+  <div style="background:var(--bg3);border-radius:9px;padding:14px;margin-bottom:4px">
+    <div style="font-weight:600;font-size:13px">${j.part} — ${j.desc}</div>
+    <div style="font-size:11px;color:var(--tx2);margin-top:3px">${j.mach} · ${j.mat} · Rev ${j.rev}</div>
+  </div>
+  <div style="font-size:12px;color:#f87171;margin:12px 0">This action cannot be undone.</div>
+  <div class="mft"><button class="bsm" onclick="cMdl()">Cancel</button><button class="bsm" style="background:rgba(239,68,68,.15);color:#f87171;border-color:rgba(239,68,68,.3)" onclick="MFG.splice(${i},1);cMdl();rMfg()">Delete Job</button></div>`);
+}
+function openMfgMdl(){
+  mdl(`<div class="mttl">New Manufacturing Job</div>
+  <div class="g2" style="gap:9px"><div class="fg"><label class="fl">Part Number</label><input class="fi" id="mj-p" placeholder="668-XX-001"></div><div class="fg"><label class="fl">Revision</label><input class="fi" id="mj-r" placeholder="A"></div></div>
+  <div class="fg"><label class="fl">Description</label><input class="fi" id="mj-d" placeholder="Part description..."></div>
+  <div class="g2" style="gap:9px">
+    <div class="fg"><label class="fl">Machine</label>
+      <select class="fs" id="mj-m" onchange="toggleMachCustom('mj')">
+        ${['Lathe','CNC Mill','Manual Mill','Router','3D Printer','Custom'].map(m=>`<option>${m}</option>`).join('')}
+      </select>
+      <input class="fi" id="mj-m-custom" placeholder="Specify machine name..." style="margin-top:6px;display:none">
+    </div>
+    <div class="fg"><label class="fl">Material</label><select class="fs" id="mj-mt">${['Aluminum Billet','Aluminum L Bracket','Aluminum Sheets','Polycarbonate','Brass','SRPP','Delrin','Acrylic','Wood','PLA-CF','PLA','PETG','ASA','ABS','Custom'].map(m=>`<option>${m}</option>`).join('')}</select></div>
+  </div>
+  <div class="g2" style="gap:9px">
+    <div class="fg"><label class="fl">Status</label><select class="fs" id="mj-s"><option value="new">New Part</option><option value="design">In Design Review</option><option value="mfg">In Mfg Review</option><option value="complete">Complete</option></select></div>
+    <div class="fg"><label class="fl">Assignee</label><select class="fs" id="mj-a">${Object.values(ROLE_DB).map(u=>`<option>${u.name}</option>`).join('')}</select></div>
+  </div>
+  <div class="fg">
+    <label class="fl">Engineering Drawing (PDF)</label>
+    <div id="dz" class="dz"
+      ondragover="dzOver(event,this)"
+      ondragleave="dzLeave(event,this)"
+      ondrop="dzDrop(event,this)"
+      onclick="dzClick(this)">
+      <input type="file" id="dzin" accept=".pdf,application/pdf"
+        style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%"
+        onchange="dzHandle(this.files[0])" onclick="event.stopPropagation()">
+      <div id="dz-idle">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.5" stroke-linecap="round" style="display:block;margin:0 auto 8px">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="12" y1="18" x2="12" y2="12"/>
+          <line x1="9" y1="15" x2="15" y2="15"/>
+        </svg>
+        <div style="font-size:13px;font-weight:500;margin-bottom:3px">Drop your drawing PDF here</div>
+        <div style="font-size:11px;color:var(--tx2)">or <span style="color:var(--red);cursor:pointer" onclick="dzClick(document.getElementById('dz'));event.stopPropagation()">browse files</span> &nbsp;·&nbsp; PDF only &nbsp;·&nbsp; Max 25 MB</div>
+      </div>
+      <div id="dz-uploading" style="display:none">
+        <div style="font-size:12px;font-weight:500;margin-bottom:8px;color:var(--tx2)">Uploading...</div>
+        <div style="height:3px;background:var(--bg4);border-radius:2px;overflow:hidden;width:200px;margin:0 auto">
+          <div id="dz-prog-fill" style="height:100%;background:var(--red);border-radius:2px;width:0%;transition:width .05s"></div>
+        </div>
+        <div id="dz-prog-pct" style="font-size:11px;color:var(--tx2);margin-top:6px">0%</div>
+      </div>
+    </div>
+    <!-- file chip shown after upload -->
+    <div id="dz-chip" style="display:none;margin-top:10px;background:var(--bg4);border:1px solid var(--b2);border-radius:8px;padding:10px 12px;gap:10px;align-items:flex-start">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <div style="width:34px;height:42px;background:var(--bg3);border:1px solid var(--b2);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:var(--red);flex-shrink:0;position:relative;overflow:hidden">
+          PDF
+          <div style="position:absolute;top:0;right:0;width:0;height:0;border-style:solid;border-width:0 9px 9px 0;border-color:transparent var(--bg2) transparent transparent"></div>
+        </div>
+        <div style="flex:1;min-width:0">
+          <div id="dz-fname" style="font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">—</div>
+          <div id="dz-fmeta" style="font-size:10px;color:var(--tx2);margin-top:2px">—</div>
+        </div>
+        <div style="display:flex;gap:5px;flex-shrink:0">
+          <div class="act-btn" id="dz-preview-btn" title="Preview drawing" onclick="dzTogglePreview()" style="display:none">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <div class="act-btn del" title="Remove file" onclick="dzClear()">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg>
+          </div>
+        </div>
+      </div>
+      <!-- inline PDF preview canvas -->
+      <div id="dz-canvas-wrap" style="display:none;border-radius:7px;overflow:hidden;border:1px solid var(--b2)">
+        <div style="background:var(--bg3);padding:6px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b)">
+          <span style="font-size:10px;color:var(--tx2);font-weight:500" id="dz-page-lbl">Page 1 of 1</span>
+          <div style="display:flex;gap:5px">
+            <button class="bsm" style="padding:2px 8px;font-size:10px" onclick="dzPageNav(-1)">←</button>
+            <button class="bsm" style="padding:2px 8px;font-size:10px" onclick="dzPageNav(1)">→</button>
+          </div>
+        </div>
+        <canvas id="dz-canvas" style="display:block;width:100%;background:#fff"></canvas>
+      </div>
+    </div>
+    <label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-top:9px;width:fit-content">
+      <input type="checkbox" id="nn" onchange="dzNotNec()" style="accent-color:var(--red);cursor:pointer">
+      <span style="font-size:11px;color:var(--tx2)">Drawing not necessary for this part</span>
+    </label>
+  </div>
+  <div class="mft"><button class="bsm" onclick="cMdl()">Cancel</button><button class="bsm pr" onclick="crMfg()">Create Job</button></div>`);
+  // load PDF.js if not already loaded
+  dzLoadPdfJs();
+}
+
+// ── Drop zone engine ──────────────────────────────────────────
+// uf is declared in the main state block above (line ~444)
+let dzPdfDoc = null;  // PDF.js document
+let dzPdfPage = 1;    // current preview page
+
+function dzLoadPdfJs(){
+  if(window.pdfjsLib) return;
+  const s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+  s.onload=()=>{ pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; };
+  document.head.appendChild(s);
+}
+
+function dzOver(e, el){
+  e.preventDefault(); e.stopPropagation();
+  el.classList.add('ov');
+}
+function dzLeave(e, el){
+  if(!el.contains(e.relatedTarget)) el.classList.remove('ov');
+}
+function dzDrop(e, el){
+  e.preventDefault(); e.stopPropagation();
+  el.classList.remove('ov');
+  const f = e.dataTransfer?.files?.[0];
+  if(f) dzHandle(f);
+}
+function dzClick(el){
+  if(document.getElementById('nn')?.checked) return;
+  el.querySelector('input[type=file]')?.click();
+}
+
+function dzHandle(f){
+  if(!f) return;
+  const isPdf = f.type==='application/pdf' || f.name.toLowerCase().endsWith('.pdf');
+  if(!isPdf){ dzShowError('Only PDF files are accepted.'); return; }
+  if(f.size > 25*1024*1024){ dzShowError('File too large — maximum is 25 MB.'); return; }
+  uf = f;
+  dzShowUploading();
+  let p = 0;
+  const iv = setInterval(()=>{
+    p += Math.random()*20 + 8;
+    if(p >= 100){ p=100; clearInterval(iv); setTimeout(()=>dzFinish(f), 150); }
+    const fill = document.getElementById('dz-prog-fill');
+    const pct  = document.getElementById('dz-prog-pct');
+    if(fill) fill.style.width = Math.min(p,100).toFixed(0)+'%';
+    if(pct)  pct.textContent  = Math.min(Math.round(p),100)+'%';
+  }, 50);
+}
+
+function dzShowUploading(){
+  const dz = document.getElementById('dz');
+  if(!dz) return;
+  dz.classList.remove('ov','hf');
+  document.getElementById('dz-idle').style.display = 'none';
+  document.getElementById('dz-uploading').style.display = 'block';
+  document.getElementById('dz-chip').style.display = 'none';
+}
+
+function dzFinish(f){
+  const dz = document.getElementById('dz');
+  if(!dz) return;
+  // show success state on drop zone
+  dz.classList.add('hf');
+  document.getElementById('dz-idle').style.display = 'none';
+  document.getElementById('dz-uploading').style.display = 'none';
+  // update idle text for replace behaviour
+  const idleDiv = document.getElementById('dz-idle');
+  if(idleDiv){
+    idleDiv.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" style="display:block;margin:0 auto 6px"><polyline points="20 6 9 17 4 12"/></svg><div style="font-size:12px;font-weight:500;color:var(--tx)">Drawing uploaded — drag to replace</div>`;
+    idleDiv.style.display = 'block';
+  }
+  // populate chip
+  const chip = document.getElementById('dz-chip');
+  chip.style.display = 'block';
+  document.getElementById('dz-fname').textContent = f.name;
+  const sz = f.size < 1048576 ? (f.size/1024).toFixed(1)+' KB' : (f.size/1048576).toFixed(2)+' MB';
+  document.getElementById('dz-fmeta').textContent = sz + ' · ' + new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  // attempt PDF preview
+  dzRenderPdf(f);
+}
+
+function dzRenderPdf(f){
+  if(!window.pdfjsLib){
+    // try again in 800ms if library hasn't loaded yet
+    setTimeout(()=>dzRenderPdf(f), 800); return;
+  }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const data = new Uint8Array(e.target.result);
+    pdfjsLib.getDocument({data}).promise.then(pdf=>{
+      dzPdfDoc = pdf;
+      dzPdfPage = 1;
+      document.getElementById('dz-preview-btn').style.display = 'flex';
+      document.getElementById('dz-fmeta').textContent =
+        document.getElementById('dz-fmeta').textContent.replace(/·.*$/,'') +
+        '· ' + pdf.numPages + (pdf.numPages===1?' page':' pages');
+      // auto-show preview
+      dzOpenPreview();
+    }).catch(()=>{ /* PDF.js parse error — still allow upload, just no preview */ });
+  };
+  reader.readAsArrayBuffer(f);
+}
+
+function dzOpenPreview(){
+  document.getElementById('dz-canvas-wrap').style.display = 'block';
+  dzDrawPage(dzPdfPage);
+}
+function dzTogglePreview(){
+  const wrap = document.getElementById('dz-canvas-wrap');
+  if(!wrap) return;
+  wrap.style.display = wrap.style.display==='none' ? 'block' : 'none';
+  if(wrap.style.display==='block') dzDrawPage(dzPdfPage);
+}
+function dzPageNav(dir){
+  if(!dzPdfDoc) return;
+  const next = dzPdfPage + dir;
+  if(next < 1 || next > dzPdfDoc.numPages) return;
+  dzPdfPage = next;
+  dzDrawPage(dzPdfPage);
+}
+function dzDrawPage(num){
+  if(!dzPdfDoc) return;
+  dzPdfDoc.getPage(num).then(page=>{
+    const canvas = document.getElementById('dz-canvas');
+    if(!canvas) return;
+    const scale = (canvas.parentElement.offsetWidth || 420) / page.getViewport({scale:1}).width;
+    const vp = page.getViewport({scale: Math.min(scale, 2)});
+    canvas.width = vp.width; canvas.height = vp.height;
+    page.render({canvasContext: canvas.getContext('2d'), viewport: vp});
+    const lbl = document.getElementById('dz-page-lbl');
+    if(lbl) lbl.textContent = `Page ${num} of ${dzPdfDoc.numPages}`;
+  });
+}
+
+function dzClear(){
+  uf = null; dzPdfDoc = null; dzPdfPage = 1;
+  const dz = document.getElementById('dz');
+  if(!dz) return;
+  dz.classList.remove('hf','ov');
+  // restore idle state
+  const idle = document.getElementById('dz-idle');
+  idle.innerHTML = `
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.5" stroke-linecap="round" style="display:block;margin:0 auto 8px">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+      <line x1="12" y1="18" x2="12" y2="12"/>
+      <line x1="9" y1="15" x2="15" y2="15"/>
+    </svg>
+    <div style="font-size:13px;font-weight:500;margin-bottom:3px">Drop your drawing PDF here</div>
+    <div style="font-size:11px;color:var(--tx2)">or <span style="color:var(--red);cursor:pointer" onclick="dzClick(document.getElementById('dz'));event.stopPropagation()">browse files</span> &nbsp;·&nbsp; PDF only &nbsp;·&nbsp; Max 25 MB</div>`;
+  idle.style.display = 'block';
+  document.getElementById('dz-uploading').style.display = 'none';
+  document.getElementById('dz-chip').style.display = 'none';
+  document.getElementById('dz-canvas-wrap').style.display = 'none';
+  document.getElementById('dz-preview-btn').style.display = 'none';
+  const inp = document.getElementById('dzin'); if(inp) inp.value='';
+}
+
+function dzNotNec(){
+  const checked = document.getElementById('nn')?.checked;
+  const dz = document.getElementById('dz');
+  if(!dz) return;
+  dz.style.opacity = checked ? '.4' : '';
+  dz.style.pointerEvents = checked ? 'none' : '';
+  if(checked) dzClear();
+}
+
+function dzShowError(msg){
+  const dz = document.getElementById('dz');
+  if(!dz) return;
+  dz.classList.remove('ov');
+  const idle = document.getElementById('dz-idle');
+  if(idle){
+    idle.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" style="display:block;margin:0 auto 6px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div style="font-size:12px;color:#f87171;font-weight:500">${msg}</div>`;
+    idle.style.display='block';
+  }
+  setTimeout(()=>dzClear(), 3000);
+}
+
+function setupDZ(){ /* legacy stub — no longer needed, drag events are inline */ }
+function getMach(prefix){
+  const sel = document.getElementById(prefix+'-m');
+  if(!sel) return '';
+  if(sel.value==='Custom'){
+    const custom = document.getElementById(prefix+'-m-custom');
+    return custom?.value?.trim() || 'Custom';
+  }
+  return sel.value;
+}
+function toggleMachCustom(prefix){
+  const sel = document.getElementById(prefix+'-m');
+  const box = document.getElementById(prefix+'-m-custom');
+  if(!sel||!box) return;
+  box.style.display = sel.value==='Custom' ? 'block' : 'none';
+  if(sel.value==='Custom') box.focus();
+}
+function crMfg(){
+  const p=gv('mj-p');if(!p)return;
+  const drawing=document.getElementById('nn')?.checked?'Not necessary':(uf?uf.name:'—');
+  const blob=document.getElementById('nn')?.checked?null:(uf||null);
+  MFG.push({id:`MFG-00${MFG.length+1}`,part:p,desc:gv('mj-d'),mach:getMach('mj'),mat:gv('mj-mt'),rev:gv('mj-r')||'A',st:gv('mj-s'),as:gv('mj-a'),drawing,blob,upd:'Today'});
+  uf=null;cMdl();rMfg();
+}
+function ordStatusBadge(s){
+  const map={pending:'sp-n',ordered:'sp-r',delivered:'sp-d',cancelled:'sp-p'};
+  return `<span class="sp ${map[s]||'sp-n'}">${s||'pending'}</span>`;
+}
+
+function rOrd(){
+  const role = effectiveRole();
+  const isStudent = role === 'student';
+
+  // everyone can place orders
+  document.getElementById('tba').innerHTML=`<button class="bsm pr" onclick="openOrdMdl()">+ Request Parts</button>`;
+
+  const projects=['all',...new Set(ORDERS.map(o=>o.project).filter(Boolean)),...PROJ.map(p=>p.name)].filter((v,i,a)=>a.indexOf(v)===i);
+  const allFiltered = ordFilter==='all' ? ORDERS : ORDERS.filter(o=>o.project===ordFilter);
+
+  if(isStudent){
+    // students: split into active vs ordered/delivered
+    const activeOrds   = allFiltered.filter(o=>!['ordered','delivered'].includes(o.status));
+    const orderedOrds  = allFiltered.filter(o=>['ordered','delivered'].includes(o.status));
+    const orderedTotal = orderedOrds.reduce((s,o)=>s+o.price*o.qty,0);
+    const activeTotal  = activeOrds.reduce((s,o)=>s+o.price*o.qty,0);
+
+    document.getElementById('mc').innerHTML=`
+      <!-- project filter -->
+      <div style="display:flex;align-items:center;gap:7px;margin-bottom:16px">
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:var(--tx3);flex-shrink:0"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+        <select class="fs" style="flex:1;max-width:260px;padding:7px 10px;font-size:12px" onchange="ordFilter=this.value;rOrd()">
+          ${projects.map(p=>`<option value="${p}"${ordFilter===p?' selected':''}>${p==='all'?'All Projects':p}</option>`).join('')}
+        </select>
+        <span style="font-size:12px;color:var(--tx2)">${allFiltered.length} order${allFiltered.length!==1?'s':''}</span>
+      </div>
+
+      <!-- ACTIVE ORDERS -->
+      <div style="margin-bottom:20px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <span style="font-family:'Syne',sans-serif;font-weight:600;font-size:13px">Active Orders</span>
+          <span style="background:rgba(59,130,246,.15);color:#60a5fa;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600">${activeOrds.length}</span>
+        </div>
+        ${activeOrds.length===0
+          ?`<div style="background:var(--bg3);border:1px solid var(--b);border-radius:10px;padding:20px;text-align:center;color:var(--tx3);font-size:13px">No active orders${ordFilter!=='all'?' for this project':''} right now.</div>`
+          :`<div style="background:var(--bg2);border:1px solid var(--b);border-radius:12px;overflow:hidden">
+            ${activeOrds.map(o=>`
+            <div style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--b);cursor:pointer" onclick="viewOrder(${ORDERS.indexOf(o)})" title="View details">
+              <div style="flex:1;min-width:0">
+                <div style="font-weight:600;font-size:13px">${o.name}</div>
+                <div style="font-size:11px;color:var(--tx2);margin-top:2px;display:flex;gap:8px;flex-wrap:wrap">
+                  <span style="color:var(--red)">${o.part}</span>
+                  <span>·</span><span>${o.project||'No project'}</span>
+                  <span>·</span><span>Requested by ${o.req}</span>
+                </div>
+              </div>
+              <div style="text-align:right;flex-shrink:0">
+                <div style="font-size:13px;font-weight:700;color:var(--gr)">$${(o.price*o.qty).toFixed(2)}</div>
+                <div style="font-size:10px;color:var(--tx3)">$${o.price.toFixed(2)} × ${o.qty}</div>
+              </div>
+              ${ordStatusBadge(o.status)}
+            </div>`).join('')}
+            <div style="display:flex;justify-content:space-between;padding:10px 16px;background:var(--bg3)">
+              <span style="font-size:12px;font-weight:600;color:var(--tx2)">Active Total</span>
+              <span style="font-size:13px;font-weight:700;color:var(--red)">$${activeTotal.toFixed(2)}</span>
+            </div>
+          </div>`}
+      </div>
+
+      <!-- ORDERED SECTION -->
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;cursor:pointer" onclick="toggleOrderedSection()" id="ordered-hdr">
+          <svg id="ordered-chev" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" style="transition:transform .2s"><polyline points="6 9 12 15 18 9"/></svg>
+          <span style="font-family:'Syne',sans-serif;font-weight:600;font-size:13px">Ordered</span>
+          <span style="background:rgba(34,197,94,.15);color:#4ade80;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600">${orderedOrds.length}</span>
+          <div style="flex:1;height:1px;background:var(--b)"></div>
+          ${orderedOrds.length>0?`<span style="font-size:12px;font-weight:600;color:var(--gr)">$${orderedTotal.toFixed(2)}</span>`:''}
+        </div>
+        <div id="ordered-section">
+          ${orderedOrds.length===0
+            ?`<div style="background:var(--bg3);border:1px solid var(--b);border-radius:10px;padding:16px;text-align:center;color:var(--tx3);font-size:12px">
+                Nothing ordered yet${ordFilter!=='all'?' for this project':''}.
+              </div>`
+            :`<div style="background:var(--bg2);border:1px solid var(--green-border,rgba(34,197,94,.2));border-radius:12px;overflow:hidden">
+              ${orderedOrds.map(o=>`
+              <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--b);cursor:pointer;opacity:${o.status==='delivered'?'1':'.85'}" onclick="viewOrder(${ORDERS.indexOf(o)})" title="View details">
+                <div style="width:7px;height:7px;border-radius:50%;background:${o.status==='delivered'?'var(--gr)':'#fbbf24'};flex-shrink:0"></div>
+                <div style="flex:1;min-width:0">
+                  <div style="font-weight:500;font-size:13px">${o.name}</div>
+                  <div style="font-size:11px;color:var(--tx2);margin-top:2px;display:flex;gap:8px;flex-wrap:wrap">
+                    <span>${o.part}</span>
+                    <span>·</span><span>${o.project||'No project'}</span>
+                    <span>·</span><span>${o.req}</span>
+                  </div>
+                </div>
+                <div style="text-align:right;flex-shrink:0">
+                  <div style="font-size:12px;font-weight:600;color:var(--tx2)">$${(o.price*o.qty).toFixed(2)}</div>
+                  <div style="font-size:10px;color:var(--tx3)">qty ${o.qty}</div>
+                </div>
+                ${ordStatusBadge(o.status)}
+              </div>`).join('')}
+              <div style="display:flex;justify-content:space-between;padding:10px 16px;background:var(--bg3)">
+                <span style="font-size:12px;font-weight:600;color:var(--tx2)">Ordered Total</span>
+                <span style="font-size:13px;font-weight:700;color:var(--gr)">$${orderedTotal.toFixed(2)}</span>
+              </div>
+            </div>`}
+        </div>
+      </div>`;
+
+  } else {
+    // full admin/mentor/captain view
+    const filtered = allFiltered;
+    const activeOrds  = filtered.filter(o=>!['ordered','delivered'].includes(o.status));
+    const orderedOrds = filtered.filter(o=>['ordered','delivered'].includes(o.status));
+    const activeTotal  = activeOrds.reduce((s,o)=>s+o.price*o.qty,0);
+    const orderedTotal = orderedOrds.reduce((s,o)=>s+o.price*o.qty,0);
+
+    document.getElementById('mc').innerHTML=`
+      <!-- filter + summary bar -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:7px;flex:1;min-width:180px">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:var(--tx3);flex-shrink:0"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          <select class="fs" style="flex:1;padding:7px 10px;font-size:12px" onchange="ordFilter=this.value;rOrd()">
+            ${projects.map(p=>`<option value="${p}"${ordFilter===p?' selected':''}>${p==='all'?'All Projects':p}</option>`).join('')}
+          </select>
+        </div>
+        <div style="font-size:12px;color:var(--tx2)">${filtered.length} order${filtered.length!==1?'s':''} &nbsp;·&nbsp; <span style="font-weight:600;color:var(--red)">$${(activeTotal+orderedTotal).toFixed(2)}</span> total</div>
+      </div>
+
+      <!-- active orders table -->
+      <div class="card" style="overflow-x:auto;margin-bottom:20px">
+        <table class="tbl">
+          <thead><tr>
+            <th>PO #</th><th>Part #</th><th>Name</th><th>Unit</th><th>Qty</th><th>Subtotal</th><th>Project</th><th>Status</th><th>Requestor</th><th></th>
+          </tr></thead>
+          <tbody>
+            ${activeOrds.length===0?`<tr><td colspan="10" style="text-align:center;padding:24px;color:var(--tx3)">No active orders${ordFilter!=='all'?' for this project':''} — all items have been ordered.</td></tr>`:''}
+            ${activeOrds.map((o)=>{
+              const realIdx=ORDERS.indexOf(o);
+              return `<tr style="cursor:pointer" onclick="viewOrder(${realIdx})" title="Click to view details">
+                <td style="color:var(--tx3);font-size:11px">${o.id}</td>
+                <td><span style="color:var(--red);font-weight:600;text-decoration:underline;text-underline-offset:2px;text-decoration-style:dotted;cursor:pointer"
+                  onclick="event.stopPropagation();${o.link?`window.open('${o.link}','_blank')`:''}">
+                  ${o.part}</span></td>
+                <td style="font-weight:500">${o.name}</td>
+                <td>$${o.price.toFixed(2)}</td>
+                <td>${o.qty}</td>
+                <td style="font-weight:700;color:var(--gr)">$${(o.price*o.qty).toFixed(2)}</td>
+                <td style="font-size:11px;color:var(--tx2)">${o.project||'—'}</td>
+                <td>${ordStatusBadge(o.status)}</td>
+                <td style="font-size:12px">${o.req}</td>
+                <td onclick="event.stopPropagation()"><div class="act-btns">
+                  <div class="act-btn ${o.readyToOrder?'':'edit'}" title="${o.readyToOrder?'Already marked ready':'Mark ready to order'}"
+                    style="${o.readyToOrder?'background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:#4ade80;cursor:default':''}"
+                    ${o.readyToOrder?'':'onclick="markRTO(\''+o.id+'\');rOrd()"'}>
+                    <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                  </div>
+                  <div class="act-btn edit" title="Edit" onclick="editOrder(${realIdx})"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+                  <div class="act-btn del" title="Delete" onclick="delOrder(${realIdx})"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg></div>
+                </div></td>
+              </tr>`;
+            }).join('')}
+            ${activeOrds.length>0?`<tr>
+              <td colspan="5" style="font-weight:600;color:var(--tx2);font-size:12px">${ordFilter==='all'?'Active Total':'Project Active Total'}</td>
+              <td style="font-weight:700;color:var(--red);font-size:14px">$${activeTotal.toFixed(2)}</td>
+              <td colspan="4"></td>
+            </tr>`:''}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ordered section -->
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;cursor:pointer" onclick="toggleOrderedSection()" id="ordered-hdr">
+          <svg id="ordered-chev" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" style="transition:transform .2s"><polyline points="6 9 12 15 18 9"/></svg>
+          <span style="font-family:'Syne',sans-serif;font-weight:600;font-size:13px">Ordered</span>
+          <span style="background:rgba(34,197,94,.15);color:#4ade80;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600">${orderedOrds.length}</span>
+          <div style="flex:1;height:1px;background:var(--b)"></div>
+          ${orderedOrds.length>0?`<span style="font-size:12px;font-weight:600;color:var(--gr)">$${orderedTotal.toFixed(2)}</span>`:''}
+        </div>
+        <div id="ordered-section">
+          ${orderedOrds.length===0
+            ?`<div style="background:var(--bg3);border:1px solid var(--b);border-radius:10px;padding:16px;text-align:center;color:var(--tx3);font-size:12px">
+                No ordered items yet${ordFilter!=='all'?' for this project':''}.
+              </div>`
+            :`<div style="background:var(--bg2);border:1px solid rgba(34,197,94,.2);border-radius:12px;overflow:hidden">
+              ${orderedOrds.map(o=>{
+                const realIdx=ORDERS.indexOf(o);
+                return `<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--b);cursor:pointer" onclick="viewOrder(${realIdx})" title="View details">
+                  <div style="width:7px;height:7px;border-radius:50%;background:${o.status==='delivered'?'var(--gr)':'#fbbf24'};flex-shrink:0"></div>
+                  <div style="flex:1;min-width:0">
+                    <div style="font-weight:500;font-size:13px">${o.name}</div>
+                    <div style="font-size:11px;color:var(--tx2);margin-top:2px;display:flex;gap:8px;flex-wrap:wrap">
+                      <span style="color:var(--red)">${o.part}</span>
+                      <span>·</span><span>${o.project||'—'}</span>
+                      <span>·</span><span>${o.req}</span>
+                    </div>
+                  </div>
+                  <div style="text-align:right;flex-shrink:0">
+                    <div style="font-size:12px;font-weight:600;color:var(--tx2)">$${(o.price*o.qty).toFixed(2)}</div>
+                    <div style="font-size:10px;color:var(--tx3)">qty ${o.qty}</div>
+                  </div>
+                  ${ordStatusBadge(o.status)}
+                  <div class="act-btns" onclick="event.stopPropagation()">
+                    <div class="act-btn edit" title="Edit" onclick="editOrder(${realIdx})"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+                    <div class="act-btn del" title="Delete" onclick="delOrder(${realIdx})"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg></div>
+                  </div>
+                </div>`;
+              }).join('')}
+              <div style="display:flex;justify-content:space-between;padding:10px 16px;background:var(--bg3)">
+                <span style="font-size:12px;font-weight:600;color:var(--tx2)">Ordered Total</span>
+                <span style="font-size:13px;font-weight:700;color:var(--gr)">$${orderedTotal.toFixed(2)}</span>
+              </div>
+            </div>`}
+        </div>
+      </div>`;
+  }
+}
+
+let _orderedOpen = true;
+function toggleOrderedSection(){
+  _orderedOpen = !_orderedOpen;
+  const sec = document.getElementById('ordered-section');
+  const chev = document.getElementById('ordered-chev');
+  if(sec) sec.style.display = _orderedOpen ? 'block' : 'none';
+  if(chev) chev.style.transform = _orderedOpen ? '' : 'rotate(-90deg)';
+}
+
+function viewOrder(i){
+  const o=ORDERS[i];
+  mdl(`<div class="mttl">Order Details</div>
+  <!-- header -->
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px">
+    <div>
+      <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700">${o.name}</div>
+      <div style="font-size:12px;color:var(--tx2);margin-top:2px">${o.id} &nbsp;·&nbsp; Part: <span style="color:var(--red);font-weight:500">${o.part}</span></div>
+    </div>
+    ${ordStatusBadge(o.status)}
+  </div>
+
+  <!-- key info grid -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+    ${[
+      ['Unit Price','$'+o.price.toFixed(2)],
+      ['Quantity',o.qty],
+      ['Subtotal','$'+(o.price*o.qty).toFixed(2)],
+      ['Requestor',o.req],
+      ['Project',o.project||'—'],
+      ['Status',o.status||'pending'],
+    ].map(([l,v])=>`<div style="background:var(--bg3);border-radius:8px;padding:10px 12px">
+      <div style="font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:3px">${l}</div>
+      <div style="font-size:13px;font-weight:500">${v}</div>
+    </div>`).join('')}
+  </div>
+
+  <!-- justification -->
+  <div style="background:var(--bg3);border-radius:8px;padding:12px;margin-bottom:10px">
+    <div style="font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:5px">Justification</div>
+    <div style="font-size:13px;color:var(--tx2);line-height:1.5">${o.just||'—'}</div>
+  </div>
+
+  ${o.notes?`<div style="background:var(--bg3);border-radius:8px;padding:12px;margin-bottom:10px">
+    <div style="font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:5px">Notes</div>
+    <div style="font-size:13px;color:var(--tx2);line-height:1.5">${o.notes}</div>
+  </div>`:''}
+
+  <div class="mft">
+    <button class="bsm" onclick="cMdl()">Close</button>
+    ${o.link?`<a href="${o.link}" target="_blank" class="bsm" style="text-decoration:none;display:inline-flex;align-items:center;gap:5px">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      View Product
+    </a>`:''}
+    <button class="bsm pr" onclick="cMdl();editOrder(${i})">Edit Order</button>
+  </div>`);
+}
+
+function editOrder(i){
+  const o=ORDERS[i];
+  mdl(`<div class="mttl">Edit Purchase Order</div>
+  <div class="g2" style="gap:9px">
+    <div class="fg"><label class="fl">Part Number</label><input class="fi" id="eo-p" value="${o.part}"></div>
+    <div class="fg"><label class="fl">Name</label><input class="fi" id="eo-n" value="${o.name}"></div>
+  </div>
+  <div class="fg"><label class="fl">External Link</label><input class="fi" id="eo-l" value="${o.link||''}"></div>
+  <div class="g2" style="gap:9px">
+    <div class="fg"><label class="fl">Unit Price ($)</label><input type="number" class="fi" id="eo-pr" value="${o.price}"></div>
+    <div class="fg"><label class="fl">Quantity</label><input type="number" class="fi" id="eo-q" value="${o.qty}"></div>
+  </div>
+  <div class="g2" style="gap:9px">
+    <div class="fg"><label class="fl">Project</label>
+      <select class="fs" id="eo-proj">
+        <option value="">— None —</option>
+        ${PROJ.map(p=>`<option${o.project===p.name?' selected':''}>${p.name}</option>`).join('')}
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Status</label>
+      <select class="fs" id="eo-st">
+        ${['pending','ordered','delivered','cancelled'].map(s=>`<option${o.status===s?' selected':''}>${s}</option>`).join('')}
+      </select>
+    </div>
+  </div>
+  <div class="fg"><label class="fl">Requestor</label>
+    <select class="fs" id="eo-r">${Object.values(ROLE_DB).map(u=>`<option${u.name===o.req?' selected':''}>${u.name}</option>`).join('')}</select>
+  </div>
+  <div class="fg"><label class="fl">Justification</label><textarea class="fi" id="eo-j" rows="2">${o.just||''}</textarea></div>
+  <div class="fg"><label class="fl">Notes</label><input class="fi" id="eo-notes" value="${o.notes||''}" placeholder="Optional notes..."></div>
+  <div class="mft"><button class="bsm" onclick="cMdl()">Cancel</button><button class="bsm pr" onclick="saveOrder(${i})">Save Changes</button></div>`);
+}
+function saveOrder(i){
+  ORDERS[i]={...ORDERS[i],
+    part:gv('eo-p'),name:gv('eo-n'),link:gv('eo-l'),
+    price:parseFloat(gv('eo-pr'))||0,qty:parseInt(gv('eo-q'))||1,
+    project:gv('eo-proj'),status:gv('eo-st'),
+    req:gv('eo-r'),just:gv('eo-j'),notes:gv('eo-notes')
+  };
+  cMdl();rOrd();
+}
+function delOrder(i){
+  const o=ORDERS[i];
+  mdl(`<div class="mttl">Delete Purchase Order?</div>
+  <div style="background:var(--bg3);border-radius:9px;padding:14px;margin-bottom:4px">
+    <div style="font-weight:600;font-size:13px">${o.part} — ${o.name}</div>
+    <div style="font-size:11px;color:var(--tx2);margin-top:3px">$${o.price.toFixed(2)} × ${o.qty} = $${(o.price*o.qty).toFixed(2)} · ${o.req}</div>
+  </div>
+  <div style="font-size:12px;color:#f87171;margin:12px 0">This action cannot be undone.</div>
+  <div class="mft"><button class="bsm" onclick="cMdl()">Cancel</button>
+  <button class="bsm" style="background:rgba(239,68,68,.15);color:#f87171;border-color:rgba(239,68,68,.3)"
+    onclick="ORDERS.splice(${i},1);cMdl();rOrd()">Delete Order</button></div>`);
+}
+function openOrdMdl(){
+  const isStudent = effectiveRole() === 'student';
+  const myName = currentUser?.name || '';
+  mdl(`<div class="mttl">New Purchase Request</div>
+  <div class="g2" style="gap:9px">
+    <div class="fg"><label class="fl">Part Number</label><input class="fi" id="po-p" placeholder="REV-11-1300"></div>
+    <div class="fg"><label class="fl">Name</label><input class="fi" id="po-n" placeholder="Component name..."></div>
+  </div>
+  <div class="fg"><label class="fl">External Link</label><input class="fi" id="po-l" placeholder="https://..."></div>
+  <div class="g2" style="gap:9px">
+    <div class="fg"><label class="fl">Unit Price ($)</label><input type="number" class="fi" id="po-pr" placeholder="0.00"></div>
+    <div class="fg"><label class="fl">Quantity</label><input type="number" class="fi" id="po-q" value="1"></div>
+  </div>
+  <div class="g2" style="gap:9px">
+    <div class="fg"><label class="fl">Project</label>
+      <select class="fs" id="po-proj">
+        <option value="">— None —</option>
+        ${PROJ.map(p=>`<option>${p.name}</option>`).join('')}
+      </select>
+    </div>
+    ${!isStudent ? `<div class="fg"><label class="fl">Status</label>
+      <select class="fs" id="po-st">
+        <option>pending</option><option>ordered</option><option>delivered</option><option>cancelled</option>
+      </select>
+    </div>` : `<input type="hidden" id="po-st" value="pending">`}
+  </div>
+  <div class="fg">
+    <label class="fl">Requestor</label>
+    ${isStudent
+      ? `<input class="fi" id="po-r" value="${myName}" readonly style="opacity:.7;cursor:default">`
+      : `<select class="fs" id="po-r">${Object.values(ROLE_DB).map(u=>`<option${u.name===myName?' selected':''}>${u.name}</option>`).join('')}</select>`
+    }
+  </div>
+  <div class="fg"><label class="fl">Justification</label><textarea class="fi" id="po-j" rows="2" placeholder="Why are these parts needed?"></textarea></div>
+  <div class="fg"><label class="fl">Notes</label><input class="fi" id="po-notes" placeholder="Optional notes, urgency, supplier..."></div>
+  <div class="mft"><button class="bsm" onclick="cMdl()">Cancel</button><button class="bsm pr" onclick="crOrd()">Submit Request</button></div>`);
+}
+function crOrd(){
+  const p=gv('po-p');if(!p)return;
+  ORDERS.push({
+    id:`PO-${String(ORDERS.length+1).padStart(3,'0')}`,
+    part:p,name:gv('po-n'),
+    price:parseFloat(gv('po-pr'))||0,qty:parseInt(gv('po-q'))||1,
+    link:gv('po-l'),req:gv('po-r'),just:gv('po-j'),
+    project:gv('po-proj'),status:gv('po-st')||'pending',
+    notes:gv('po-notes')
+  });
+  cMdl();rOrd();
+}
+
+// ═══════════════════════════════════════════
+//  READY TO ORDER
+// ═══════════════════════════════════════════
+function rReadyToOrder(){
+  const projects=['all',...new Set([...ORDERS.map(o=>o.project),...PROJ.map(p=>p.name)].filter(Boolean)).values()].filter((v,i,a)=>a.indexOf(v)===i);
+  const rtoFilter = window._rtoFilter||'all';
+  const allOrd = ORDERS.filter(o=>rtoFilter==='all'||o.project===rtoFilter);
+  const rtoItems = allOrd.filter(o=>o.readyToOrder);
+  const notReady = allOrd.filter(o=>!o.readyToOrder);
+  if(!window._rtoChecked) window._rtoChecked=new Set();
+  const checkedIds = window._rtoChecked;
+  const totalChecked=[...checkedIds].reduce((s,id)=>{const o=ORDERS.find(o=>o.id===id);return s+(o?o.price*o.qty:0);},0);
+
+  document.getElementById('mc').innerHTML=`
+  <!-- header bar -->
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:7px;flex:1;min-width:180px">
+      <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:var(--tx3);flex-shrink:0"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+      <select class="fs" style="flex:1;padding:7px 10px;font-size:12px" onchange="window._rtoFilter=this.value;rReadyToOrder()">
+        ${projects.map(p=>`<option value="${p}"${rtoFilter===p?' selected':''}>${p==='all'?'All Projects':p}</option>`).join('')}
+      </select>
+    </div>
+    ${checkedIds.size>0?`
+    <div style="font-size:12px;color:var(--tx2)">${checkedIds.size} selected &nbsp;·&nbsp; <span style="font-weight:600;color:var(--gr)">$${totalChecked.toFixed(2)}</span></div>
+    <button class="bsm pr" style="display:flex;align-items:center;gap:5px" onclick="bulkSubmitOrder()">
+      <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      Submit ${checkedIds.size} Order${checkedIds.size>1?'s':''}
+    </button>
+    <button class="bsm" onclick="window._rtoChecked=new Set();rReadyToOrder()">Clear</button>
+    `:''}
+  </div>
+
+  <!-- READY TO ORDER list -->
+  <div style="margin-bottom:20px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-family:'Syne',sans-serif;font-weight:600;font-size:13px">Ready to Order</span>
+        <span style="background:rgba(34,197,94,.15);color:#4ade80;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600">${rtoItems.length}</span>
+      </div>
+      ${rtoItems.length>0?`<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:var(--tx2)">
+        <input type="checkbox" id="rto-all" style="accent-color:var(--red);cursor:pointer"
+          ${rtoItems.length>0&&rtoItems.every(o=>checkedIds.has(o.id))?'checked':''}
+          onchange="rtoToggleAll(this.checked)">
+        Select all
+      </label>`:''}
+    </div>
+
+    ${rtoItems.length===0
+      ?`<div style="background:var(--bg3);border:1px solid var(--b);border-radius:10px;padding:24px;text-align:center;color:var(--tx3);font-size:13px">
+          No items marked ready to order${rtoFilter!=='all'?' for this project':''}.
+          <br><span style="font-size:11px;margin-top:4px;display:block">Mark items ready using the <strong style="color:var(--tx)">"Mark Ready"</strong> button below.</span>
+        </div>`
+      :`<div style="background:var(--bg2);border:1px solid var(--gr);border-radius:12px;overflow:hidden">
+        ${rtoItems.map(o=>`
+        <div style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--b)">
+          <input type="checkbox" style="accent-color:var(--red);cursor:pointer;width:15px;height:15px;flex-shrink:0"
+            ${checkedIds.has(o.id)?'checked':''}
+            onchange="rtoToggle('${o.id}',this.checked)">
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:600;font-size:13px">${o.name}</div>
+            <div style="font-size:11px;color:var(--tx2);margin-top:2px;display:flex;gap:8px;flex-wrap:wrap">
+              <span style="color:var(--red)">${o.part}</span>
+              <span>·</span><span>${o.project||'No project'}</span>
+              <span>·</span><span>Req. by ${o.req}</span>
+            </div>
+          </div>
+          <div style="text-align:right;flex-shrink:0">
+            <div style="font-size:13px;font-weight:700;color:var(--gr)">$${(o.price*o.qty).toFixed(2)}</div>
+            <div style="font-size:10px;color:var(--tx3)">$${o.price.toFixed(2)} × ${o.qty}</div>
+          </div>
+          ${o.link?`<a href="${o.link}" target="_blank" class="bsm" style="font-size:11px;padding:5px 9px;text-decoration:none;flex-shrink:0" title="View product">
+            <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>`:''}
+          <button class="bsm" style="font-size:11px;padding:4px 9px;flex-shrink:0;color:#f87171;border-color:rgba(239,68,68,.3)" onclick="unmarkRTO('${o.id}')">✕ Remove</button>
+        </div>`).join('')}
+        <div style="display:flex;justify-content:space-between;padding:11px 16px;background:var(--bg3)">
+          <span style="font-size:12px;font-weight:600;color:var(--tx2)">Ready to Order Total</span>
+          <span style="font-size:14px;font-weight:700;color:var(--gr)">$${rtoItems.reduce((s,o)=>s+(o.price*o.qty),0).toFixed(2)}</span>
+        </div>
+      </div>`
+    }
+  </div>
+
+  <!-- PENDING list -->
+  <div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+      <span style="font-family:'Syne',sans-serif;font-weight:600;font-size:13px">Pending Orders</span>
+      <span style="background:var(--bg4);color:var(--tx2);font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600">${notReady.length}</span>
+      <span style="font-size:11px;color:var(--tx3)">— click <em>Mark Ready</em> to move above</span>
+    </div>
+    ${notReady.length===0
+      ?`<div style="background:var(--bg3);border:1px solid var(--b);border-radius:10px;padding:14px;text-align:center;color:var(--tx3);font-size:12px">All orders are marked ready.</div>`
+      :`<div style="background:var(--bg2);border:1px solid var(--b);border-radius:12px;overflow:hidden">
+        ${notReady.map(o=>`
+        <div style="display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--b)">
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:500;font-size:13px">${o.name}</div>
+            <div style="font-size:11px;color:var(--tx3);margin-top:2px;display:flex;gap:8px;flex-wrap:wrap">
+              <span>${o.part}</span><span>·</span><span>${o.project||'No project'}</span>
+              <span>·</span><span>${o.req}</span>
+              <span>·</span><span style="font-weight:600">$${(o.price*o.qty).toFixed(2)}</span>
+            </div>
+          </div>
+          <span class="sp ${o.status==='delivered'?'sp-d':o.status==='ordered'?'sp-r':o.status==='cancelled'?'sp-p':'sp-n'}">${o.status||'pending'}</span>
+          <button class="bsm pr" style="font-size:11px;padding:4px 11px;flex-shrink:0;display:flex;align-items:center;gap:5px" onclick="markRTO('${o.id}')">
+            <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            Mark Ready
+          </button>
+        </div>`).join('')}
+      </div>`
+    }
+  </div>`;
+}
+
+function markRTO(id){
+  const o=ORDERS.find(o=>o.id===id);
+  if(o) o.readyToOrder=true;
+  rReadyToOrder();
+}
+function unmarkRTO(id){
+  const o=ORDERS.find(o=>o.id===id);
+  if(o) o.readyToOrder=false;
+  if(window._rtoChecked) window._rtoChecked.delete(id);
+  rReadyToOrder();
+}
+function rtoToggle(id,checked){
+  if(!window._rtoChecked) window._rtoChecked=new Set();
+  if(checked) window._rtoChecked.add(id); else window._rtoChecked.delete(id);
+  rReadyToOrder();
+}
+function rtoToggleAll(checked){
+  if(!window._rtoChecked) window._rtoChecked=new Set();
+  const rtoFilter=window._rtoFilter||'all';
+  ORDERS.filter(o=>o.readyToOrder&&(rtoFilter==='all'||o.project===rtoFilter))
+    .forEach(o=>{ if(checked) window._rtoChecked.add(o.id); else window._rtoChecked.delete(o.id); });
+  rReadyToOrder();
+}
+function bulkSubmitOrder(){
+  if(!window._rtoChecked||window._rtoChecked.size===0) return;
+  const ids=[...window._rtoChecked];
+  const items=ids.map(id=>ORDERS.find(o=>o.id===id)).filter(Boolean);
+  const total=items.reduce((s,o)=>s+(o.price*o.qty),0);
+  mdl(`<div class="mttl">Confirm Bulk Order</div>
+  <div style="background:var(--bg3);border-radius:9px;padding:14px;margin-bottom:14px">
+    <div style="font-size:12px;color:var(--tx2);margin-bottom:10px;font-weight:500">${items.length} item${items.length>1?'s':''} ready to submit:</div>
+    <div style="display:flex;flex-direction:column;gap:0">
+      ${items.map(o=>`<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--b);font-size:12px">
+        <span style="font-weight:500">${o.name} <span style="color:var(--tx3)">×${o.qty}</span></span>
+        <span style="font-weight:600;color:var(--gr)">$${(o.price*o.qty).toFixed(2)}</span>
+      </div>`).join('')}
+      <div style="display:flex;justify-content:space-between;padding-top:10px;font-weight:700;font-size:14px">
+        <span>Total</span><span style="color:var(--red)">$${total.toFixed(2)}</span>
+      </div>
+    </div>
+  </div>
+  <div style="font-size:12px;color:var(--tx2);line-height:1.6;margin-bottom:4px">
+    These items will be marked as <strong style="color:var(--tx)">ordered</strong> and removed from the Ready to Order queue.
+  </div>
+  <div class="mft">
+    <button class="bsm" onclick="cMdl()">Cancel</button>
+    <button class="bsm pr" onclick="confirmBulkOrder([${ids.map(id=>`'${id}'`).join(',')}])">Confirm &amp; Submit</button>
+  </div>`);
+}
+function confirmBulkOrder(ids){
+  ids.forEach(id=>{
+    const o=ORDERS.find(o=>o.id===id);
+    if(o){ o.status='ordered'; o.readyToOrder=false; }
+  });
+  window._rtoChecked=new Set();
+  cMdl();
+  const toast=document.createElement('div');
+  toast.style.cssText='position:fixed;bottom:24px;right:24px;background:#22c55e;color:#fff;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:600;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,.3);display:flex;align-items:center;gap:8px';
+  toast.innerHTML=`<svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>${ids.length} order${ids.length>1?'s':''} submitted successfully`;
+  document.body.appendChild(toast);
+  setTimeout(()=>toast.remove(),3500);
+  mt='orders'; rMfg();
+}
+
+// ═══════════════════════════════════════════
+//  ENGINEERING TOOLS
+// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════
+//  ENGINEERING TOOLS
+// ═══════════════════════════════════════════
+
+// Custom tools store — each entry has: id, emoji, title, desc, inputs[], formula, resultLabel, resultUnit
+// inputs: [{id, label, type:'number'|'select', default, options:[{label,value}]}]
+let CUSTOM_TOOLS = [];
+
+function rEng(){
+  document.getElementById('tba').innerHTML=`<button class="bsm pr" onclick="openAddToolMdl()">+ Add Tool</button>`;
+  s(`<div class="pg">
+  <div class="g2" style="gap:13px" id="eng-grid">
+  <!-- built-in tools -->
+  <div class="cc">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:2px">
+      <div class="ctit">🔧 Belt Length Calculator</div>
+    </div>
+    <div class="cdesc">Center-to-center distance for a two-pulley belt system</div>
+    <div class="crow"><span class="clbl">Pulley 1 (teeth)</span><input class="cinp" id="bl-p1" type="number" value="18" oninput="cBelt()"></div>
+    <div class="crow"><span class="clbl">Pulley 2 (teeth)</span><input class="cinp" id="bl-p2" type="number" value="36" oninput="cBelt()"></div>
+    <div class="crow"><span class="clbl">Belt (teeth)</span><input class="cinp" id="bl-b" type="number" value="100" oninput="cBelt()"></div>
+    <div class="crow"><span class="clbl">Pitch</span><select class="csel" id="bl-pi" onchange="cBelt()"><option value="5">GT2 5mm</option><option value="3">GT2 3mm</option><option value="2">GT2 2mm</option><option value="5">HTD 5mm</option></select></div>
+    <div class="cres"><div class="creslbl">Center-to-Center Distance</div><div class="cresv" id="bl-o">—</div></div>
+  </div>
+  <div class="cc">
+    <div class="ctit">⚙️ Belt Tooth Counter</div>
+    <div class="cdesc">Required teeth for a given C-C distance</div>
+    <div class="crow"><span class="clbl">Pulley 1 (teeth)</span><input class="cinp" id="bt-p1" type="number" value="18" oninput="cTooth()"></div>
+    <div class="crow"><span class="clbl">Pulley 2 (teeth)</span><input class="cinp" id="bt-p2" type="number" value="36" oninput="cTooth()"></div>
+    <div class="crow"><span class="clbl">C-C Distance (mm)</span><input class="cinp" id="bt-cc" type="number" value="200" oninput="cTooth()"></div>
+    <div class="crow"><span class="clbl">Pitch</span><select class="csel" id="bt-pi" onchange="cTooth()"><option value="5">GT2 5mm</option><option value="3">GT2 3mm</option><option value="2">GT2 2mm</option><option value="5">HTD 5mm</option></select></div>
+    <div class="cres"><div class="creslbl">Required Belt Teeth</div><div class="cresv" id="bt-o">—</div></div>
+  </div>
+  <div class="cc">
+    <div class="ctit">⚡ Motor Torque Calculator</div>
+    <div class="cdesc">Output torque from gearbox ratio and motor</div>
+    <div class="crow"><span class="clbl">Motor</span><select class="csel" id="mt-m" onchange="cTorq()"><option value="9.37">Kraken X60 (9.37 Nm)</option><option value="4.05">Kraken X44 (4.05 Nm)</option><option value="3.36">NEO Vortex (3.36 Nm)</option><option value="2.6">NEO v1.1 (2.6 Nm)</option><option value="2.42">Falcon 500 (2.42 Nm)</option><option value="0.34">NEO 550 (0.34 Nm)</option><option value="1.08">CIM (1.08 Nm)</option></select></div>
+    <div class="crow"><span class="clbl">Gear Ratio</span><input class="cinp" id="mt-r" type="number" value="10" oninput="cTorq()"></div>
+    <div class="crow"><span class="clbl">Efficiency (%)</span><input class="cinp" id="mt-e" type="number" value="85" oninput="cTorq()"></div>
+    <div class="cres"><div class="creslbl">Output Torque</div><div class="cresv" id="mt-o">—</div></div>
+  </div>
+  <div class="cc">
+    <div class="ctit">🔩 Motor Stress Calculator</div>
+    <div class="cdesc">Current draw estimate at operating load</div>
+    <div class="crow">
+      <span class="clbl">Motor Preset</span>
+      <select class="csel" id="ms-preset" onchange="setStressPreset()">
+        <option value="9.37,483,2.0">Kraken X60</option>
+        <option value="4.05,275,1.5">Kraken X44</option>
+        <option value="3.36,211,1.4">NEO Vortex</option>
+        <option value="2.6,166,1.3">NEO v1.1</option>
+        <option value="2.42,257,1.5">Falcon 500</option>
+        <option value="0.34,100,1.0">NEO 550</option>
+        <option value="1.08,133,2.7">CIM</option>
+        <option value="custom">Custom</option>
+      </select>
+    </div>
+    <div class="crow"><span class="clbl">Load Torque (Nm)</span><input class="cinp" id="ms-l" type="number" value="5" oninput="cStr()"></div>
+    <div class="crow"><span class="clbl">Stall Torque (Nm)</span><input class="cinp" id="ms-s" type="number" value="9.37" oninput="cStr()"></div>
+    <div class="crow"><span class="clbl">Stall Current (A)</span><input class="cinp" id="ms-sa" type="number" value="483" oninput="cStr()"></div>
+    <div class="crow"><span class="clbl">Free Current (A)</span><input class="cinp" id="ms-fa" type="number" value="2.0" oninput="cStr()"></div>
+    <div class="cres"><div class="creslbl">Est. Current Draw</div><div class="cresv" id="ms-o">—</div><div style="font-size:10px;color:var(--tx2);margin-top:2px" id="ms-p">—</div></div>
+  </div>
+  <!-- custom tools injected here -->
+  ${CUSTOM_TOOLS.map(t=>renderCustomTool(t)).join('')}
+  </div></div>`);
+  cBelt();cTooth();cTorq();cStr();
+  CUSTOM_TOOLS.forEach(t=>evalCustomTool(t.id));
+}
+
+function renderCustomTool(t){
+  const canEdit = ['admin','mentor','captain'].includes(effectiveRole());
+  return `<div class="cc" id="ct-${t.id}">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:2px">
+      <div class="ctit">${t.emoji} ${t.title}</div>
+      ${canEdit?`<div class="act-btns" style="flex-shrink:0;margin-left:8px;margin-top:1px">
+        <div class="act-btn edit" title="Edit tool" onclick="editCustomTool('${t.id}')">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </div>
+        <div class="act-btn del" title="Delete tool" onclick="deleteCustomTool('${t.id}')">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg>
+        </div>
+      </div>`:''}
+    </div>
+    <div class="cdesc">${t.desc}</div>
+    ${t.inputs.map((inp,idx)=>`
+      <div class="crow">
+        <span class="clbl">${inp.label}</span>
+        <input class="cinp" id="ct-${t.id}-i${idx}" type="number"
+          value="${inp.default||0}"
+          oninput="evalCustomTool('${t.id}')">
+      </div>`).join('')}
+    <div class="cres">
+      <div class="creslbl">${t.resultLabel}</div>
+      <div class="cresv" id="ct-${t.id}-out">—</div>
+      <div style="font-size:10px;color:var(--tx2);margin-top:2px" id="ct-${t.id}-note"></div>
+    </div>
+  </div>`;
+}
+
+function evalCustomTool(id){
+  const t = CUSTOM_TOOLS.find(t=>t.id===id);
+  if(!t) return;
+  const vals = t.inputs.map((_,idx)=>{
+    const el = document.getElementById(`ct-${id}-i${idx}`);
+    return el ? (parseFloat(el.value)||0) : 0;
+  });
+  try {
+    // Build a safe scope: inputs available as a0, a1, a2... and Math.*
+    const fnBody = `
+      const [${vals.map((_,i)=>'a'+i).join(',')}] = args;
+      with(Math){ return (${t.formula}); }
+    `;
+    // eslint-disable-next-line no-new-func
+    const fn = new Function('args', fnBody);
+    const result = fn(vals);
+    const out = document.getElementById(`ct-${id}-out`);
+    if(out) out.textContent = isNaN(result)||!isFinite(result) ? 'Invalid' : result.toFixed(t.decimals??2)+' '+(t.resultUnit||'');
+  } catch(e) {
+    const out = document.getElementById(`ct-${id}-out`);
+    if(out) out.textContent = 'Formula error';
+    const note = document.getElementById(`ct-${id}-note`);
+    if(note) note.textContent = e.message;
+  }
+}
+
+function openAddToolMdl(existing){
+  const isEdit = !!existing;
+  const t = existing || { emoji:'🔢', title:'', desc:'', resultLabel:'Result', resultUnit:'', decimals:2, formula:'a0 + a1', inputs:[{label:'Input 1',default:0},{label:'Input 2',default:0}] };
+  mdl(`<div class="mttl">${isEdit?'Edit':'Add'} Engineering Tool</div>
+  <div class="g2" style="gap:9px">
+    <div class="fg"><label class="fl">Emoji Icon</label><input class="fi" id="ct-emoji" value="${t.emoji}" maxlength="4" style="font-size:18px"></div>
+    <div class="fg"><label class="fl">Tool Title</label><input class="fi" id="ct-title" value="${t.title}" placeholder="e.g. Gear Ratio Calculator"></div>
+  </div>
+  <div class="fg"><label class="fl">Description</label><input class="fi" id="ct-desc" value="${t.desc}" placeholder="What does this calculator do?"></div>
+
+  <div class="fg">
+    <label class="fl">Inputs <span style="color:var(--tx3);font-weight:400;text-transform:none;letter-spacing:0">(variables a0, a1, a2… in your formula)</span></label>
+    <div id="ct-inputs-list" style="display:flex;flex-direction:column;gap:6px">
+      ${t.inputs.map((inp,i)=>`
+        <div style="display:flex;gap:6px;align-items:center" id="ct-inp-row-${i}">
+          <input class="fi" style="flex:1" placeholder="Label" id="ct-inp-lbl-${i}" value="${inp.label}">
+          <input class="fi cinp" style="width:72px" type="number" placeholder="Default" id="ct-inp-def-${i}" value="${inp.default??0}">
+          <div class="act-btn del" onclick="removeCTInput(${i})" title="Remove input"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        </div>`).join('')}
+    </div>
+    <button class="bsm" style="margin-top:7px;font-size:11px" onclick="addCTInput()">+ Add Input</button>
+  </div>
+
+  <div class="fg">
+    <label class="fl">Formula <span style="color:var(--tx3);font-weight:400;text-transform:none;letter-spacing:0">— use a0, a1… and Math functions (sqrt, pow, PI…)</span></label>
+    <input class="fi" id="ct-formula" value="${t.formula}" placeholder="e.g. a0 * a1 / (2 * PI)" style="font-family:monospace;font-size:12px">
+    <div style="font-size:10px;color:var(--tx3);margin-top:4px">Examples: <code>a0 * a1</code> &nbsp;·&nbsp; <code>sqrt(pow(a0,2) + pow(a1,2))</code> &nbsp;·&nbsp; <code>(a0 / a1) * 100</code></div>
+  </div>
+
+  <div class="g2" style="gap:9px">
+    <div class="fg"><label class="fl">Result Label</label><input class="fi" id="ct-rlabel" value="${t.resultLabel}" placeholder="e.g. Output Force"></div>
+    <div class="fg"><label class="fl">Unit</label><input class="fi" id="ct-runit" value="${t.resultUnit||''}" placeholder="e.g. N, mm, %"></div>
+  </div>
+  <div class="fg"><label class="fl">Decimal Places</label>
+    <select class="fs" id="ct-dec">
+      ${[0,1,2,3,4].map(n=>`<option value="${n}"${(t.decimals??2)===n?' selected':''}>${n}</option>`).join('')}
+    </select>
+  </div>
+
+  <div class="mft">
+    <button class="bsm" onclick="cMdl()">Cancel</button>
+    <button class="bsm pr" onclick="${isEdit?`saveCustomTool('${t.id}')`:'createCustomTool()'}">
+      ${isEdit?'Save Changes':'Add Tool'}
+    </button>
+  </div>`);
+}
+
+// track how many input rows are shown in the modal
+let _ctInputCount = 0;
+function getCTInputRows(){
+  // count how many ct-inp-row-N exist
+  let i=0; while(document.getElementById(`ct-inp-row-${i}`)) i++;
+  return i;
+}
+function addCTInput(){
+  const n = getCTInputRows();
+  const list = document.getElementById('ct-inputs-list');
+  if(!list) return;
+  const row = document.createElement('div');
+  row.style.cssText='display:flex;gap:6px;align-items:center';
+  row.id=`ct-inp-row-${n}`;
+  row.innerHTML=`
+    <input class="fi" style="flex:1" placeholder="Label" id="ct-inp-lbl-${n}" value="Input ${n+1}">
+    <input class="fi cinp" style="width:72px" type="number" placeholder="Default" id="ct-inp-def-${n}" value="0">
+    <div class="act-btn del" onclick="removeCTInput(${n})" title="Remove input"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>`;
+  list.appendChild(row);
+}
+function removeCTInput(idx){
+  const row = document.getElementById(`ct-inp-row-${idx}`);
+  if(row) row.remove();
+}
+
+function collectCTInputs(){
+  const inputs=[];
+  let i=0;
+  while(true){
+    const lbl = document.getElementById(`ct-inp-lbl-${i}`);
+    if(!lbl) break;
+    if(lbl.closest('[id^=ct-inp-row-]')){ // only if not removed
+      inputs.push({label:lbl.value||`Input ${i+1}`, default:parseFloat(document.getElementById(`ct-inp-def-${i}`)?.value||0)});
+    }
+    i++;
+  }
+  return inputs;
+}
+
+function createCustomTool(){
+  const title=gv('ct-title');
+  if(!title){ alert('Please enter a tool title.'); return; }
+  const formula=gv('ct-formula');
+  if(!formula){ alert('Please enter a formula.'); return; }
+  const tool={
+    id:'ct_'+Date.now(),
+    emoji:gv('ct-emoji')||'🔢',
+    title,
+    desc:gv('ct-desc'),
+    inputs:collectCTInputs(),
+    formula,
+    resultLabel:gv('ct-rlabel')||'Result',
+    resultUnit:gv('ct-runit'),
+    decimals:parseInt(gv('ct-dec')??2)
+  };
+  CUSTOM_TOOLS.push(tool);
+  cMdl();rEng();
+}
+
+function editCustomTool(id){
+  const t=CUSTOM_TOOLS.find(t=>t.id===id);
+  if(t) openAddToolMdl(t);
+}
+
+function saveCustomTool(id){
+  const idx=CUSTOM_TOOLS.findIndex(t=>t.id===id);
+  if(idx===-1) return;
+  const title=gv('ct-title');
+  if(!title){ alert('Please enter a tool title.'); return; }
+  CUSTOM_TOOLS[idx]={
+    ...CUSTOM_TOOLS[idx],
+    emoji:gv('ct-emoji')||'🔢',
+    title,
+    desc:gv('ct-desc'),
+    inputs:collectCTInputs(),
+    formula:gv('ct-formula'),
+    resultLabel:gv('ct-rlabel')||'Result',
+    resultUnit:gv('ct-runit'),
+    decimals:parseInt(gv('ct-dec')??2)
+  };
+  cMdl();rEng();
+}
+
+function deleteCustomTool(id){
+  const t=CUSTOM_TOOLS.find(t=>t.id===id);
+  if(!t) return;
+  mdl(`<div class="mttl">Delete Tool?</div>
+  <div style="background:var(--bg3);border-radius:9px;padding:14px;margin-bottom:4px">
+    <div style="font-weight:600;font-size:13px">${t.emoji} ${t.title}</div>
+    <div style="font-size:11px;color:var(--tx2);margin-top:2px">${t.desc||'No description'}</div>
+  </div>
+  <div style="font-size:12px;color:#f87171;margin:12px 0">This will remove the tool for everyone. This action cannot be undone.</div>
+  <div class="mft">
+    <button class="bsm" onclick="cMdl()">Cancel</button>
+    <button class="bsm" style="background:rgba(239,68,68,.15);color:#f87171;border-color:rgba(239,68,68,.3)"
+      onclick="CUSTOM_TOOLS.splice(CUSTOM_TOOLS.findIndex(t=>t.id==='${id}'),1);cMdl();rEng()">
+      Delete Tool
+    </button>
+  </div>`);
+}
+
+function cBelt(){const p1=+gv('bl-p1')||18,p2=+gv('bl-p2')||36,b=+gv('bl-b')||100,pi=+gv('bl-pi')||5;const r1=p1*pi/(2*Math.PI),r2=p2*pi/(2*Math.PI),L=b*pi,d=Math.pow((p2-p1)*pi/(2*Math.PI),2),cc=(L-Math.PI*(r1+r2))/2+Math.sqrt(Math.pow((L-Math.PI*(r1+r2))/2,2)-2*d);sv('bl-o',isNaN(cc)||cc<0?'Invalid input':'~'+cc.toFixed(1)+' mm');}
+function cTooth(){const p1=+gv('bt-p1')||18,p2=+gv('bt-p2')||36,cc=+gv('bt-cc')||200,pi=+gv('bt-pi')||5;const r1=p1*pi/(2*Math.PI),r2=p2*pi/(2*Math.PI);sv('bt-o',Math.round((2*cc+Math.PI*(r1+r2)*2)/pi)+' teeth');}
+function cTorq(){const m=+gv('mt-m')||9.37,r=+gv('mt-r')||10,e=+gv('mt-e')||85;sv('mt-o',(m*r*(e/100)).toFixed(2)+' Nm');}
+function cStr(){
+  const l=+gv('ms-l')||5, st=+gv('ms-s')||9.37, sa=+gv('ms-sa')||483, fa=+gv('ms-fa')||2.0;
+  const pct=l/st, cur=fa+pct*(sa-fa);
+  sv('ms-o',cur.toFixed(1)+' A');
+  sv('ms-p','Load: '+(pct*100).toFixed(0)+'% of stall · '+(pct>0.5?'⚠ High thermal stress':'✓ Acceptable'));
+}
+function setStressPreset(){
+  const sel=document.getElementById('ms-preset');
+  if(!sel||sel.value==='custom') return;
+  const [stall,stallA,freeA]=sel.value.split(',').map(Number);
+  const sEl=document.getElementById('ms-s');
+  const saEl=document.getElementById('ms-sa');
+  const faEl=document.getElementById('ms-fa');
+  if(sEl) sEl.value=stall;
+  if(saEl) saEl.value=stallA;
+  if(faEl) faEl.value=freeA;
+  cStr();
+}
+
+// ═══════════════════════════════════════════
+//  CALENDAR
+// ═══════════════════════════════════════════
+function rCal(){
+  const canEdit = ['admin','mentor','captain'].includes(effectiveRole());
+  if(canEdit)
+    document.getElementById('tba').innerHTML=`<button class="bsm pr" onclick="openEvMdl()">+ New Event</button>`;
+  const role=effectiveRole();
+  const visible=EVS.filter(e=>e.vis==='all'||(e.vis==='mentors'&&['mentor','admin'].includes(role))||(e.vis==='captains'&&['captain','mentor','admin'].includes(role)));
+  s(`<div class="pg"><div class="g2">
+  <div>
+    <div class="sh"><div class="st2">Team Events</div></div>
+    ${visible.length===0?`<div style="text-align:center;padding:32px;color:var(--tx3);font-size:13px">No events to show.</div>`:''}
+    ${visible.map((e,i)=>{
+      const idx=EVS.indexOf(e);
+      return `<div class="ev" style="align-items:flex-start">
+        <div class="ed">
+          <div class="eday">${e.dt.replace(/\D.*$/,'')}</div>
+          <div class="emo">${e.dt.toLowerCase().includes('apr')?'APR':'MAY'}</div>
+        </div>
+        <div style="flex:1;min-width:0">
+          <div class="ett">${e.ti}</div>
+          <div class="esb">${e.type} · ${e.dt}</div>
+          ${e.desc?`<div style="font-size:11px;color:var(--tx3);margin-top:2px">${e.desc}</div>`:''}
+          <div style="margin-top:6px;display:flex;gap:5px;align-items:center;flex-wrap:wrap">
+            <span class="sp ${e.vis==='all'?'sp-d':'sp-r'}">${e.vis==='all'?'All members':e.vis==='mentors'?'Mentors only':'Captains+'}</span>
+            ${e.lnk?`<a href="${e.lnk}" target="_blank" style="font-size:10px;color:var(--red)">Meeting link →</a>`:''}
+          </div>
+        </div>
+        ${canEdit?`<div class="act-btns" style="flex-shrink:0;margin-left:8px">
+          <div class="act-btn edit" title="Edit event" onclick="editEvMdl(${idx})">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </div>
+          <div class="act-btn del" title="Delete event" onclick="delEvMdl(${idx})">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg>
+          </div>
+        </div>`:''}
+      </div>`;
+    }).join('')}
+  </div>
+  <div>
+    <div class="sh"><div class="st2">May 2025</div></div>
+    <div class="card">
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);text-align:center;gap:2px;margin-bottom:5px">
+        ${['S','M','T','W','T','F','S'].map(d=>`<div style="font-size:9px;font-weight:600;color:var(--tx3);padding:2px">${d}</div>`).join('')}
+        ${[null,null,null,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31].map(d=>d?`<div style="padding:5px 1px;border-radius:4px;font-size:11px;cursor:pointer;${[26,27].includes(d)?'background:var(--red);color:#fff;font-weight:600':[15,16,17].includes(d)?'background:var(--red-g);color:var(--red);font-weight:500':'color:var(--tx2)'}">${d}</div>`:'<div></div>').join('')}
+      </div>
+      <div style="font-size:10px;color:var(--tx3);text-align:center;margin-top:5px">Red = competition days</div>
+    </div>
+  </div>
+  </div></div>`);
+}
+
+function evFormFields(e){
+  // shared form HTML used by both create and edit
+  return `
+  <div class="fg"><label class="fl">Title</label><input class="fi" id="ev-t" placeholder="Event title..." value="${e?e.ti:''}"></div>
+  <div class="fg"><label class="fl">Description</label><textarea class="fi" id="ev-d" rows="2">${e?e.desc:''}</textarea></div>
+  <div class="g2" style="gap:9px">
+    <div class="fg"><label class="fl">Date</label><input class="fi" id="ev-dt" placeholder="May 10" value="${e?e.dt:''}"></div>
+    <div class="fg"><label class="fl">Type</label><select class="fs" id="ev-ty">${['Competition','Meeting','Outreach','Build Session','Workshop'].map(t=>`<option${e&&e.type===t?' selected':''}>${t}</option>`).join('')}</select></div>
+  </div>
+  <div class="fg"><label class="fl">Meeting Link</label><input class="fi" id="ev-l" placeholder="https://..." value="${e?e.lnk:''}"></div>
+  <div class="fg"><label class="fl">Visibility</label>
+    <select class="fs" id="ev-v">
+      <option value="all"${e&&e.vis==='all'?' selected':''}>All Members</option>
+      <option value="captains"${e&&e.vis==='captains'?' selected':''}>Captains+</option>
+      <option value="mentors"${e&&e.vis==='mentors'?' selected':''}>Mentors Only</option>
+    </select>
+  </div>`;
+}
+
+function openEvMdl(){
+  mdl(`<div class="mttl">Create Event</div>
+  ${evFormFields(null)}
+  <div class="mft"><button class="bsm" onclick="cMdl()">Cancel</button><button class="bsm pr" onclick="crEv()">Create</button></div>`);
+}
+function crEv(){
+  const t=gv('ev-t');if(!t)return;
+  EVS.push({ti:t,desc:gv('ev-d'),dt:gv('ev-dt'),type:gv('ev-ty'),lnk:gv('ev-l'),vis:gv('ev-v')});
+  cMdl();rCal();
+}
+
+function editEvMdl(i){
+  const e=EVS[i];if(!e)return;
+  mdl(`<div class="mttl">Edit Event</div>
+  ${evFormFields(e)}
+  <div class="mft"><button class="bsm" onclick="cMdl()">Cancel</button><button class="bsm pr" onclick="saveEv(${i})">Save Changes</button></div>`);
+}
+function saveEv(i){
+  const t=gv('ev-t');if(!t)return;
+  EVS[i]={...EVS[i],ti:t,desc:gv('ev-d'),dt:gv('ev-dt'),type:gv('ev-ty'),lnk:gv('ev-l'),vis:gv('ev-v')};
+  cMdl();rCal();
+}
+
+function delEvMdl(i){
+  const e=EVS[i];if(!e)return;
+  mdl(`<div class="mttl">Delete Event?</div>
+  <div style="background:var(--bg3);border-radius:9px;padding:14px;margin-bottom:4px">
+    <div style="font-weight:600;font-size:13px">${e.ti}</div>
+    <div style="font-size:11px;color:var(--tx2);margin-top:2px">${e.type} · ${e.dt}</div>
+  </div>
+  <div style="font-size:12px;color:#f87171;margin:12px 0">This action cannot be undone.</div>
+  <div class="mft">
+    <button class="bsm" onclick="cMdl()">Cancel</button>
+    <button class="bsm" style="background:rgba(239,68,68,.15);color:#f87171;border-color:rgba(239,68,68,.3)" onclick="EVS.splice(${i},1);cMdl();rCal()">Delete Event</button>
+  </div>`);
+}
+
+// ═══════════════════════════════════════════
+//  ATTENDANCE
+// ═══════════════════════════════════════════
+function rAtt(){
+  const role = effectiveRole();
+  const canSeeAll  = ['admin','mentor'].includes(role);
+  const canCreate  = ['admin','mentor','captain'].includes(role);
+  if(canCreate) document.getElementById('tba').innerHTML=`<button class="bsm pr" onclick="openAttMdl()">+ Create Session</button>`;
+
+  // Decide which rows to show
+  // mentors/admins → everyone
+  // captains/students → only themselves
+  const visibleRows = canSeeAll
+    ? ATT
+    : ATT.filter(a => a.name === (viewAsRole ? null : currentUser?.name));
+
+  // stats — always computed from all data for admins, own data only for others
+  const statRows = canSeeAll ? ATT : visibleRows;
+  const avgPct = statRows.length
+    ? Math.round(statRows.reduce((sum,a)=>sum+Math.round(a.pr.filter(p=>p).length/a.pr.length*100),0)/statRows.length)
+    : 0;
+
+  // privacy notice for non-full-access roles
+  const privacyNote = !canSeeAll ? `
+    <div style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.15);border-radius:9px;margin-bottom:14px;font-size:12px;color:#60a5fa">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex-shrink:0"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Attendance records are private. You can only see your own attendance — mentors and admins can see the full team view.
+    </div>` : '';
+
+  s(`<div class="pg">
+  ${privacyNote}
+  <div class="g3 mb13">
+    <div class="st"><div class="sl">Sessions This Month</div><div class="sv">10</div><div class="ss">Build: 8 · Outreach: 2</div></div>
+    <div class="st"><div class="sl">${canSeeAll?'Avg Team Attendance':'Your Attendance'}</div><div class="sv">${avgPct}%</div><div class="ss su">↑ 5% vs last month</div></div>
+    <div class="st"><div class="sl">Slack Bot</div><div class="sv" style="color:var(--gr)">Active</div><div class="ss">DM reminders on</div></div>
+  </div>
+
+  <div class="card">
+    <div class="sh">
+      <div class="st2">${canSeeAll ? 'Team Attendance — Last 10 Sessions' : 'Your Attendance — Last 10 Sessions'}</div>
+      <div style="font-size:10px;color:var(--tx2)">
+        <span style="display:inline-flex;align-items:center;gap:3px"><span style="width:8px;height:8px;border-radius:50%;background:var(--gr);display:inline-block"></span> Present</span>
+        &nbsp;
+        <span style="display:inline-flex;align-items:center;gap:3px"><span style="width:8px;height:8px;border-radius:50%;background:var(--bg4);display:inline-block"></span> Absent</span>
+      </div>
+    </div>
+    ${visibleRows.length === 0 ? `
+      <div style="text-align:center;padding:32px;color:var(--tx3);font-size:13px">
+        No attendance data found for your account.
+      </div>` : ''}
+    ${visibleRows.map(a=>{
+      const pct=Math.round(a.pr.filter(p=>p).length/a.pr.length*100);
+      const isYou = a.name===currentUser?.name && !viewAsRole;
+      return `<div class="ar">
+        <div style="width:27px;height:27px;border-radius:7px;background:${pct>=90?'var(--gr)':pct>=70?'var(--ye)':'var(--red)'};display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0">${a.name.split(' ').map(n=>n[0]).join('')}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:12px;font-weight:500">
+            ${a.name}${isYou?' <span style="font-size:10px;color:var(--tx3);font-weight:400">(You)</span>':''}
+          </div>
+          <div style="font-size:10px;color:var(--tx3)">${a.role}</div>
+        </div>
+        <div class="adots">${a.pr.map(p=>`<div class="adot ${p?'p':'a'}"></div>`).join('')}</div>
+        <div style="font-size:12px;font-weight:600;min-width:34px;text-align:right;color:${pct>=90?'var(--gr)':pct>=70?'var(--ye)':'var(--red)'}">${pct}%</div>
+      </div>`;
+    }).join('')}
+  </div>
+
+  ${canSeeAll ? `
+  <div class="card" style="margin-top:14px">
+    <div class="sh" style="margin-bottom:14px"><div class="st2">Attendance by Role</div></div>
+    ${['student','captain','mentor','admin'].map(r=>{
+      const group = ATT.filter(a=>a.role===r);
+      if(!group.length) return '';
+      const avg = Math.round(group.reduce((s,a)=>s+Math.round(a.pr.filter(p=>p).length/a.pr.length*100),0)/group.length);
+      return `<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--b)">
+        <span class="rb rb-${r}" style="min-width:52px;text-align:center">${r}</span>
+        <div style="flex:1"><div class="pb"><div class="pbf" style="width:${avg}%;background:${avg>=90?'var(--gr)':avg>=70?'var(--ye)':'var(--red)'}"></div></div></div>
+        <span style="font-size:12px;font-weight:600;min-width:36px;text-align:right;color:${avg>=90?'var(--gr)':avg>=70?'var(--ye)':'var(--red)'}">${avg}%</span>
+        <span style="font-size:11px;color:var(--tx3)">${group.length} member${group.length>1?'s':''}</span>
+      </div>`;
+    }).join('')}
+  </div>` : ''}
+  </div>`);
+}
+function openAttMdl(){
+  mdl(`<div class="mttl">Create Attendance Session</div>
+  <div class="fg"><label class="fl">Date</label><input class="fi" id="at-d" placeholder="Apr 24, 2025"></div>
+  <div class="fg"><label class="fl">Session Type</label><select class="fs" id="at-t"><option>Build Season</option><option>Outreach</option><option>Offseason</option></select></div>
+  <div class="fg"><label class="fl">Notes (optional)</label><input class="fi" id="at-n" placeholder="Session notes..."></div>
+  <div style="background:var(--bg3);border-radius:8px;padding:11px;font-size:12px;color:var(--tx2);margin-bottom:4px">Posting will send a Slack DM to all <strong style="color:var(--tx)">${Object.keys(ROLE_DB).length} members</strong> asking them to confirm attendance.</div>
+  <div class="mft"><button class="bsm" onclick="cMdl()">Cancel</button><button class="bsm pr" onclick="cMdl();alert('Session created! Slack DMs sent to all members.')">Post + Notify Slack</button></div>`);
+}
+
+// ═══════════════════════════════════════════
+//  MEETING ARCHIVE
+// ═══════════════════════════════════════════
+function rMtgs(){
+  const canEdit = ['admin','mentor','captain'].includes(effectiveRole());
+  if(canEdit)
+    document.getElementById('tba').innerHTML=`<button class="bsm pr" onclick="openMtgMdl()">+ Upload Recording</button>`;
+
+  s(`<div class="pg">
+    ${MTG.length===0?`<div style="text-align:center;padding:48px;color:var(--tx3);font-size:13px">No meeting logs yet.</div>`:''}
+    ${MTG.map((m,i)=>`
+    <div class="mc2">
+      <div class="mdt"><div class="mday">${m.day}</div><div class="mmo">${m.mo}</div></div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+          <div style="font-weight:600;font-size:13px;flex:1">${m.ti}</div>
+          ${canEdit?`<div class="act-btns" style="flex-shrink:0">
+            <div class="act-btn edit" title="Edit meeting log" onclick="editMtg(${i})">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </div>
+            <div class="act-btn del" title="Delete meeting log" onclick="delMtg(${i})">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg>
+            </div>
+          </div>`:''}
+        </div>
+        <div style="font-size:11px;color:var(--tx2);margin-top:3px;line-height:1.6">${m.sum}</div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:7px">
+          ${m.tags.map(t=>`<span class="tag ${tagCls(t)}">${t}</span>`).join('')}
+        </div>
+        <div style="display:flex;gap:6px;margin-top:9px;align-items:center">
+          ${m.lnk?`<a href="${m.lnk}" target="_blank" class="bsm" style="font-size:11px;padding:4px 9px;text-decoration:none">▶ Recording</a>`
+                 :`<button class="bsm" style="font-size:11px;padding:4px 9px;opacity:.4;cursor:default">▶ No Recording</button>`}
+          ${m.notes?`<button class="bsm" style="font-size:11px;padding:4px 9px">📄 Notes</button>`:''}
+        </div>
+      </div>
+    </div>`).join('')}
+  </div>`);
+}
+
+function mtgFormFields(m){
+  const allTags = ['design','programming','machining','controls','outreach','business','media','electrical','strategy','manufacturing'];
+  const activeTags = m ? m.tags : [];
+  return `
+  <div class="g2" style="gap:9px">
+    <div class="fg"><label class="fl">Day</label><input class="fi" id="mt-day" type="number" placeholder="22" value="${m?m.day:''}"></div>
+    <div class="fg"><label class="fl">Month</label><input class="fi" id="mt-mo" placeholder="Apr" value="${m?m.mo:''}"></div>
+  </div>
+  <div class="fg"><label class="fl">Title</label><input class="fi" id="mt-ti" placeholder="e.g. Week Build Session" value="${m?m.ti:''}"></div>
+  <div class="fg"><label class="fl">Summary</label><textarea class="fi" id="mt-sum" rows="3" placeholder="What was covered? What tasks were assigned?">${m?m.sum:''}</textarea></div>
+  <div class="fg"><label class="fl">Recording Link</label><input class="fi" id="mt-lnk" placeholder="Google Drive or YouTube URL..." value="${m?m.lnk||'':''}"></div>
+  <div class="fg"><label class="fl">Notes / Agenda Link</label><input class="fi" id="mt-notes" placeholder="Google Doc link..." value="${m?m.notes||'':''}"></div>
+  <div class="fg">
+    <label class="fl">Tags</label>
+    <div style="display:flex;gap:5px;flex-wrap:wrap">
+      ${allTags.map(t=>`<div class="pill ${activeTags.includes(t)?'on':''}" onclick="this.classList.toggle('on')" data-tag="${t}">${t}</div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function collectMtgTags(){
+  return [...document.querySelectorAll('#mbg .pill[data-tag].on')].map(el=>el.dataset.tag);
+}
+
+function openMtgMdl(){
+  mdl(`<div class="mttl">Upload Meeting Log</div>
+  ${mtgFormFields(null)}
+  <div class="mft"><button class="bsm" onclick="cMdl()">Cancel</button><button class="bsm pr" onclick="crMtg()">Upload</button></div>`);
+}
+function crMtg(){
+  const ti=gv('mt-ti'); if(!ti) return;
+  MTG.unshift({
+    day:parseInt(gv('mt-day'))||new Date().getDate(),
+    mo:gv('mt-mo')||new Date().toLocaleString('en-US',{month:'short'}),
+    ti, sum:gv('mt-sum'), lnk:gv('mt-lnk'), notes:gv('mt-notes'),
+    tags:collectMtgTags()
+  });
+  cMdl(); rMtgs();
+}
+
+function editMtg(i){
+  const m=MTG[i]; if(!m) return;
+  mdl(`<div class="mttl">Edit Meeting Log</div>
+  ${mtgFormFields(m)}
+  <div class="mft"><button class="bsm" onclick="cMdl()">Cancel</button><button class="bsm pr" onclick="saveMtg(${i})">Save Changes</button></div>`);
+}
+function saveMtg(i){
+  const ti=gv('mt-ti'); if(!ti) return;
+  MTG[i]={
+    ...MTG[i],
+    day:parseInt(gv('mt-day'))||MTG[i].day,
+    mo:gv('mt-mo')||MTG[i].mo,
+    ti, sum:gv('mt-sum'), lnk:gv('mt-lnk'), notes:gv('mt-notes'),
+    tags:collectMtgTags()
+  };
+  cMdl(); rMtgs();
+}
+
+function delMtg(i){
+  const m=MTG[i]; if(!m) return;
+  mdl(`<div class="mttl">Delete Meeting Log?</div>
+  <div style="background:var(--bg3);border-radius:9px;padding:14px;margin-bottom:4px">
+    <div style="font-weight:600;font-size:13px">${m.ti}</div>
+    <div style="font-size:11px;color:var(--tx2);margin-top:2px">${m.mo} ${m.day}</div>
+  </div>
+  <div style="font-size:12px;color:#f87171;margin:12px 0">This will permanently remove this meeting log. This action cannot be undone.</div>
+  <div class="mft">
+    <button class="bsm" onclick="cMdl()">Cancel</button>
+    <button class="bsm" style="background:rgba(239,68,68,.15);color:#f87171;border-color:rgba(239,68,68,.3)"
+      onclick="MTG.splice(${i},1);cMdl();rMtgs()">Delete Log</button>
+  </div>`);
+}
+
+// ═══════════════════════════════════════════
+//  ADMIN PANEL
+// ═══════════════════════════════════════════
+function rAdmin(){
+  if(effectiveRole()==='student'){s('<div style="text-align:center;padding:60px;color:var(--tx2)">Access restricted. Student accounts cannot view the admin panel.</div>');return;}
+  s(`<div class="pg"><div class="g2">
+  <div>
+    <div class="sh"><div class="st2">Team Roster</div><button class="bsm pr" style="font-size:11px" onclick="openInviteMdl()">+ Invite Member</button></div>
+    <div class="card" id="roster-list">${rosterRows()}</div>
+  </div>
+  <div>
+    <div class="sh"><div class="st2">System Status</div></div>
+    <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:16px">
+      ${[['Active Projects',PROJ.length],['Open Tasks',TASKS.filter(t=>t.st!=='Complete').length],['MFG Jobs Active',MFG.filter(m=>m.st!=='complete').length],['Orders Pending',ORDERS.length]].map(([l,v])=>`<div class="csm" style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;color:var(--tx2)">${l}</span><span style="font-size:13px;font-weight:600">${v}</span></div>`).join('')}
+      ${[['Slack Bot','Connected'],['Google SSO','Active'],['Database','Online'],['Auth (RBAC)','Secure']].map(([l,v])=>`<div class="csm" style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;color:var(--tx2)">${l}</span><span style="font-size:11px;font-weight:600;color:var(--gr)">● ${v}</span></div>`).join('')}
+    </div>
+    <div class="sh"><div class="st2">Quick Actions</div></div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <button class="bsm" onclick="go('tasks');setTimeout(openTaskMdl,80)" style="text-align:left">+ Create &amp; assign task</button>
+      <button class="bsm" onclick="mt='orders';go('manufacturing')" style="text-align:left">+ Submit purchase order</button>
+      <button class="bsm" onclick="go('calendar');setTimeout(openEvMdl,80)" style="text-align:left">+ Schedule event</button>
+      <button class="bsm" onclick="go('attendance')" style="text-align:left">📊 View attendance report</button>
+    </div>
+  </div></div></div>`);
+}
+
+// ═══════════════════════════════════════════
+//  ROSTER CRUD
+// ═══════════════════════════════════════════
+function rosterRows(){
+  return Object.entries(ROLE_DB).map(([email,u],i)=>`<div class="ar" id="rrow-${i}">
+    <div style="width:27px;height:27px;border-radius:7px;background:${email===currentUser?.email?'var(--red)':'var(--bg5)'};display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0">${u.name.split(' ').map(n=>n[0]).join('')}</div>
+    <div style="flex:1;min-width:0">
+      <div style="font-size:12px;font-weight:500">${u.name}${email===currentUser?.email?' (You)':''}</div>
+      <div style="font-size:10px;color:var(--tx3)">${email}</div>
+    </div>
+    <span class="rb rb-${u.role}" style="margin-right:6px">${u.role}</span>
+    <div class="act-btns">
+      <div class="act-btn edit" title="Edit member" onclick="editMember('${email}')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+      ${email!==currentUser?.email?`<div class="act-btn del" title="Remove member" onclick="delMember('${email}')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg></div>`:''}
+    </div>
+  </div>`).join('');
+}
+function refreshRoster(){const el=document.getElementById('roster-list');if(el)el.innerHTML=rosterRows();}
+function openInviteMdl(){
+  mdl(`<div class="mttl">Invite Team Member</div>
+  <div class="fg"><label class="fl">Full Name</label><input class="fi" id="inv-n" placeholder="First Last"></div>
+  <div class="fg"><label class="fl">Team Email</label><input class="fi" id="inv-e" placeholder="name@apesofwrath668.org"></div>
+  <div class="fg"><label class="fl">Role</label><select class="fs" id="inv-r"><option value="student">Student</option><option value="captain">Captain</option><option value="mentor">Mentor</option><option value="admin">Admin</option></select></div>
+  <div class="mft"><button class="bsm" onclick="cMdl()">Cancel</button><button class="bsm pr" onclick="inviteMember()">Add Member</button></div>`);
+}
+function inviteMember(){
+  const name=gv('inv-n'),email=gv('inv-e'),role=gv('inv-r');
+  if(!name||!email)return;
+  if(!email.endsWith('@apesofwrath668.org')){alert('Email must end in @apesofwrath668.org');return;}
+  if(ROLE_DB[email]){alert('An account with this email already exists.');return;}
+  ROLE_DB[email]={name,role};
+  cMdl();refreshRoster();
+}
+function editMember(email){
+  const u=ROLE_DB[email];
+  const isSelf=email===currentUser?.email;
+  mdl(`<div class="mttl">Edit Member</div>
+  <div class="fg"><label class="fl">Full Name</label><input class="fi" id="em-n" value="${u.name}"></div>
+  <div class="fg"><label class="fl">Email</label><input class="fi" id="em-e" value="${email}"${isSelf?' disabled':''}></div>
+  <div class="fg"><label class="fl">Role</label><select class="fs" id="em-r"${isSelf?' disabled':''}>
+    <option value="student"${u.role==='student'?' selected':''}>Student</option>
+    <option value="captain"${u.role==='captain'?' selected':''}>Captain</option>
+    <option value="mentor"${u.role==='mentor'?' selected':''}>Mentor</option>
+    <option value="admin"${u.role==='admin'?' selected':''}>Admin</option>
+  </select></div>
+  ${isSelf?'<div style="font-size:11px;color:var(--tx2);margin-bottom:4px">Role and email cannot be changed for your own account.</div>':''}
+  <div class="mft"><button class="bsm" onclick="cMdl()">Cancel</button><button class="bsm pr" onclick="saveMember('${email}')">Save Changes</button></div>`);
+}
+function saveMember(oldEmail){
+  const newEmail=document.getElementById('em-e')?.value||oldEmail;
+  const name=gv('em-n');
+  const role=document.getElementById('em-r')?.value||ROLE_DB[oldEmail].role;
+  if(!name)return;
+  if(newEmail!==oldEmail){
+    if(!newEmail.endsWith('@apesofwrath668.org')){alert('Email must end in @apesofwrath668.org');return;}
+    if(ROLE_DB[newEmail]&&newEmail!==oldEmail){alert('That email is already in use.');return;}
+    delete ROLE_DB[oldEmail];
+  }
+  ROLE_DB[newEmail]={name,role};
+  cMdl();refreshRoster();
+}
+function delMember(email){
+  const u=ROLE_DB[email];
+  mdl(`<div class="mttl">Remove Member?</div>
+  <div style="background:var(--bg3);border-radius:9px;padding:14px;margin-bottom:4px">
+    <div style="font-weight:600;font-size:13px">${u.name}</div>
+    <div style="font-size:11px;color:var(--tx2);margin-top:2px">${email} · ${u.role}</div>
+  </div>
+  <div style="font-size:12px;color:#f87171;margin:12px 0">This will remove the member from the roster. This action cannot be undone.</div>
+  <div class="mft"><button class="bsm" onclick="cMdl()">Cancel</button><button class="bsm" style="background:rgba(239,68,68,.15);color:#f87171;border-color:rgba(239,68,68,.3)" onclick="confirmDelMember('${email}')">Remove Member</button></div>`);
+}
+function confirmDelMember(email){delete ROLE_DB[email];cMdl();refreshRoster();}
+
+// ═══════════════════════════════════════════
+//  MODAL HELPERS
+// ═══════════════════════════════════════════
+function mdl(h){
+  const bg=document.createElement('div');bg.className='mbg';bg.id='mbg';
+  bg.innerHTML=`<div class="mdl">${h}</div>`;
+  bg.addEventListener('click',e=>{if(e.target===bg)cMdl();});
+  document.body.appendChild(bg);
+}
+function cMdl(){const m=document.getElementById('mbg');if(m)m.remove();}
+
+
+
+function toggleTheme(){isDark=!isDark;document.body.classList.toggle('lm',!isDark);}
+
+
+
+
+</script>
+</body>
+</html>
