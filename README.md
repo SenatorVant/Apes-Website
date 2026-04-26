@@ -83,7 +83,7 @@ if (problem) {
 ---
 
 # 📜 License
-This project is licensed under the **Rahil Public License (RPL) (Pending Rahil's Consent)**:
+This project is licensed under the **Rahil Public License (RPL) (We got Rahil's Consent)**:
 
 You may use, modify, and distribute this code,  
 but only if Rahil would approve.  
