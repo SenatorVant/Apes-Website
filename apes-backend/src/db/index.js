@@ -1,3 +1,8 @@
+/**
+ * db/index.js
+ * Returns a single shared SQLite connection for the whole server process.
+ */
+
 const path     = require('path');
 const Database = require('better-sqlite3');
 

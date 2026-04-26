@@ -1,22 +1,40 @@
+/**
+ * routes/events.js
+ */
 const router = require('express').Router();
 const { getDb } = require('../db');
 const { requireAuth, requireRole } = require('../middleware/auth');
 
+// GET /api/events
 router.get('/', requireAuth, (req, res) => {
-  const db = getDb();
-  const visFilter = { admin:['all','mentors','captains','students'], mentor:['all','mentors'], captain:['all','captains'], student:['all','students'] }[req.user.role] || ['all'];
+  const db   = getDb();
+  const role = req.user.role;
+  // Filter by visibility
+  const visFilter = {
+    admin:   ['all','mentors','captains','students'],
+    mentor:  ['all','mentors'],
+    captain: ['all','captains'],
+    student: ['all','students'],
+  }[role] || ['all'];
+
   const placeholders = visFilter.map(() => '?').join(',');
-  res.json(db.prepare(`SELECT * FROM events WHERE visibility IN (${placeholders}) ORDER BY rowid`).all(...visFilter));
+  const events = db.prepare(`SELECT * FROM events WHERE visibility IN (${placeholders}) ORDER BY rowid`).all(...visFilter);
+  res.json(events);
 });
 
+// POST /api/events
 router.post('/', requireAuth, requireRole('captain','mentor','admin'), (req, res) => {
   const { title, date_str, type, visibility, link, description } = req.body;
-  if (!title || !date_str) return res.status(400).json({ error: 'title and date_str required.' });
+  if (!title || !date_str) return res.status(400).json({ error: 'title and date_str are required.' });
   const db = getDb();
-  const r  = db.prepare('INSERT INTO events (title,date_str,type,visibility,link,description,created_by) VALUES (?,?,?,?,?,?,?)').run(title, date_str, type||'Meeting', visibility||'all', link||'', description||'', req.user.id);
+  const r = db.prepare(`
+    INSERT INTO events (title, date_str, type, visibility, link, description, created_by)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+  `).run(title, date_str, type||'Meeting', visibility||'all', link||'', description||'', req.user.id);
   res.status(201).json(db.prepare('SELECT * FROM events WHERE id=?').get(r.lastInsertRowid));
 });
 
+// PUT /api/events/:id
 router.put('/:id', requireAuth, requireRole('captain','mentor','admin'), (req, res) => {
   const db = getDb();
   if (!db.prepare('SELECT id FROM events WHERE id=?').get(req.params.id)) return res.status(404).json({ error: 'Not found.' });
@@ -28,6 +46,7 @@ router.put('/:id', requireAuth, requireRole('captain','mentor','admin'), (req, r
   res.json(db.prepare('SELECT * FROM events WHERE id=?').get(req.params.id));
 });
 
+// DELETE /api/events/:id
 router.delete('/:id', requireAuth, requireRole('captain','mentor','admin'), (req, res) => {
   const db = getDb();
   if (!db.prepare('SELECT id FROM events WHERE id=?').get(req.params.id)) return res.status(404).json({ error: 'Not found.' });

@@ -17,7 +17,7 @@ this entire codebase runs purely on your wisdom, guidance, and unmatched aura.
 - The bugs? Tests of our faith in Rahil.  
 - The commits at 3:27 AM? Done in honor of Rahil.  
 
-We don’t deploy to production.  
+We don't deploy to production.  
 We deploy to **Rahil-approved reality.**
 
 ---
@@ -44,7 +44,7 @@ We tried to pick the best tools available, but nothing compares to Rahil:
 - HTML, CSS, JS  
 - React (sometimes)  
 - Node.js (when it works)  
-- Firebase (when it doesn’t)  
+- Firebase (when it doesn't)  
 - Rahil (always)  
 
 ---
@@ -52,47 +52,82 @@ We tried to pick the best tools available, but nothing compares to Rahil:
 ## 🧠 Core Architecture
 
 ```javascript
-
 if (problem) {
     askRahil();
 } else {
     stillAskRahil();
 }
 ```
-# 🛠️ Setup Instructions
+
+---
+
+## 🛠️ Setup Instructions
+
 1. Clone the repo  
 2. Install dependencies  
 3. Realize something broke  
 4. Ask Rahil  
 5. It magically works  
 
+Or, if Rahil is unavailable, follow the **actual** setup instructions in [`ApesBackend/README.md`](./ApesBackend/README.md).
+
+### Quick Start (for non-Rahil humans)
+
+```bash
+# Clone the repo
+git clone https://github.com/SenatorVant/Apes-Website.git
+cd Apes-Website/ApesBackend
+
+# Fix permissions if needed (Mac)
+sudo chown -R $(whoami) ~/.npm
+
+# Install dependencies
+npm install
+
+# Set up your environment
+cp .env.example .env
+# Edit .env with your values
+
+# Seed the database
+node src/db/seed.js
+
+# Start the server
+npm start
+```
+
+Then open **http://localhost:3001** in your browser.
+
 ---
 
-# 📈 Roadmap
-- Make website  
-- Impress judges  
-- Reach Rahil-level coding ability (impossible)  
-- Fully understand Rahil (also impossible)  
+## 📈 Roadmap
+
+- [x] Make website  
+- [ ] Impress judges  
+- [ ] Reach Rahil-level coding ability (impossible)  
+- [ ] Fully understand Rahil (also impossible)  
 
 ---
 
-# 🐒 Contributors
+## 🐒 Contributors
+
 - The Apes of Wrath Team  
 - Rahil (spiritually present in every line of code)  
 
 ---
 
-# 📜 License
+## 📜 License
+
 This project is licensed under the **Rahil Public License (RPL) (Pending Rahil's Consent)**:
 
 You may use, modify, and distribute this code,  
-but only if Rahil would approve.  
+but only if Rahil would approve.
 
 ---
 
-# 🏁 Final Words
+## 🏁 Final Words
+
 Some teams have mentors.  
 We have Rahil.  
 
 And honestly…  
-that’s just unfair to everyone else.
+that's just unfair to everyone else.
