@@ -494,17 +494,50 @@ function resolveUser(email, user){
   document.getElementById('ssoSuccess').classList.add('show');
 }
 
-function admLogin(){
-  const email=document.getElementById('admEmail').value.trim();
-  const pass=document.getElementById('admPass').value;
-  const role=document.getElementById('admRole').value;
-  if(!email.endsWith('@apesofwrath668.org')){showErr('Access restricted to @apesofwrath668.org accounts.');return;}
-  const user=ROLE_DB[email];
-  if(!user){showErr('No account found for this email address.');return;}
-  if(user.role!==role){showErr('Incorrect credentials or insufficient permissions for the selected role.');return;}
-  if(pass!==PASSES[role]){showErr('Incorrect password. Please try again.');return;}
-  currentUser={...user,email,sso:false};
-  resolveUser(email,user);
+async function admLogin(){
+  const email = document.getElementById('admEmail').value.trim();
+  const pass  = document.getElementById('admPass').value;
+  const role  = document.getElementById('admRole').value;
+
+  if(!email.endsWith('@apesofwrath668.org')){
+    showErr('Access restricted to @apesofwrath668.org accounts.');
+    return;
+  }
+  if(!pass){ showErr('Please enter your password.'); return; }
+
+  // Show a loading state
+  const btn = document.querySelector('.btn-primary');
+  btn.textContent = 'Signing in...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(window.API_BASE + '/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ email, password: pass, role })
+    });
+    const data = await res.json();
+
+    if(!res.ok){
+      showErr(data.error || 'Login failed.');
+      btn.textContent = 'Sign In';
+      btn.disabled = false;
+      return;
+    }
+
+    // Store token for future API calls
+    window._token = data.accessToken;
+
+    // Use the real user from the backend
+    currentUser = { ...data.user, sso: false };
+    resolveUser(data.user.email, data.user);
+
+  } catch(err) {
+    showErr('Could not reach server. Is the backend running?');
+    btn.textContent = 'Sign In';
+    btn.disabled = false;
+  }
 }
 
 function enterApp(){
