@@ -467,15 +467,8 @@ function toggleAdmForm(){
 function showErr(msg){const b=document.getElementById('errBox');b.textContent=msg;b.classList.add('show');if(!admOpen)toggleAdmForm();}
 
 function startSSO(){
-  // In production: trigger real Google OAuth popup here
-  // For demo: cycle through accounts to simulate different users
-  const [email,user] = demoAccounts[demoIdx % demoAccounts.length];
-  demoIdx++;
-  document.getElementById('loginMain').style.display='none';
-  const ld=document.getElementById('ssoLoading');
-  ld.classList.add('show');
-  document.getElementById('ssoEmailTxt').textContent=email;
-  setTimeout(()=>resolveUser(email,user), 1600+Math.random()*500);
+  // Redirect to real Google OAuth on the backend
+  window.location.href = window.API_BASE + '/api/auth/google';
 }
 
 function resolveUser(email, user){
